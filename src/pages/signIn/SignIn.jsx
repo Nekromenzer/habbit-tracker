@@ -212,7 +212,7 @@ const SignIn = () => {
         <div className='flex gap-4 mt-6 justify-center'>
           <span>
             {isSignIn
-              ? 'Don&lsquo;t you have account ?'
+              ? "Don't you have account ?"
               : 'Already have an account'}
           </span>
           <span
