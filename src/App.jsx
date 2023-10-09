@@ -8,7 +8,8 @@ import Dashboard from './pages/dashboard/Dashboard'
 function App () {
   return (
     <Routes>
-      <Route path='login' element={<SignIn />} />
+      {/* login sign-in / signup */}
+      <Route path='sign-in' element={<SignIn />} />
       <Route element={<HandleAuth />}>
         <Route element={<Layout />}>
           <Route path='/' element={<Dashboard />} />
