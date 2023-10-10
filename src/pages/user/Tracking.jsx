@@ -4,10 +4,8 @@ import {
   Form,
   Input,
   InputNumber,
-  Popconfirm,
   Table,
   Typography,
-  Button,
   Progress
 } from 'antd'
 import PageWrapper from '../../components/PageWrapper'

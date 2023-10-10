@@ -6,6 +6,7 @@ import Layout from './layout/Layout'
 // import Dashboard from './pages/dashboard/Dashboard'
 import Habits from './pages/user/Habits'
 import Tracking from './pages/user/Tracking'
+import Profile from './pages/user/Profile'
 
 function App () {
   return (
@@ -16,6 +17,7 @@ function App () {
         <Route element={<Layout />}>
           <Route path='/' element={<Habits />} />
           <Route path='/tracking' element={<Tracking />} />
+          <Route path='/profile' element={<Profile />} />
         </Route>
       </Route>
     </Routes>

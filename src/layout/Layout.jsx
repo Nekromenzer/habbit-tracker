@@ -72,14 +72,15 @@ const Layout = () => {
       navigate('/')
     } else if (e.key === 'tracking') {
       navigate('tracking')
-    } else if (e.key === 'tracking2') {
+    } else if (e.key === 'profile') {
       navigate('/profile')
-    } else if (e.key === 'new-vacancy') {
-      navigate('/user/jobs/new')
-    } else if (e.key === 'posted-vacancy') {
-      navigate('/user/jobs/posted')
-    }
-    console.log('click ', e)
+    } 
+    // else if (e.key === 'new-vacancy') {
+    //   navigate('/user/jobs/new')
+    // } else if (e.key === 'posted-vacancy') {
+    //   navigate('/user/jobs/posted')
+    // }
+    // console.log('click ', e)
   }
   return (
     <Row>
