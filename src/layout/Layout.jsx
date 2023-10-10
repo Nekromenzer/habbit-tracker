@@ -1,7 +1,6 @@
 import { Col, Row, Avatar } from 'antd'
 import { Outlet } from 'react-router'
 import {
-  BsFillCpuFill,
   BsFillClipboard2Fill,
   BsFillClipboard2PlusFill,
   BsFillClipboard2HeartFill,
@@ -12,6 +11,7 @@ import {
   TbLayoutSidebarLeftExpandFilled,
   TbLayoutSidebarRightExpandFilled
 } from 'react-icons/tb'
+import { FaRunning } from 'react-icons/fa'
 
 import { Menu } from 'antd'
 import { useState } from 'react'
@@ -26,7 +26,7 @@ function getItem (label, key, icon, children, type) {
   }
 }
 const items = [
-  getItem('Overview', 'overview', <BsFillCpuFill className='!text-[1.2rem]' />),
+  getItem('Habits', 'habits', <FaRunning className='!text-[1.2rem]' />),
   {
     type: 'divider'
   },
@@ -83,7 +83,7 @@ const Layout = () => {
             src='https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
           />
           {expand && (
-            <span className='text-md font-semibold'>MDC solutions</span>
+            <span className='text-md font-semibold'>James</span>
           )}
         </div>
         <Menu
@@ -94,7 +94,7 @@ const Layout = () => {
           style={{
             width: expand ? 256 : 60
           }}
-          defaultSelectedKeys={['overview']}
+          defaultSelectedKeys={['habits']}
           defaultOpenKeys={['jobs']}
           mode='inline'
           items={items}
