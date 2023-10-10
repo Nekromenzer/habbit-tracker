@@ -4,14 +4,14 @@ import {
   BsFillClipboard2Fill,
   BsFillClipboard2PlusFill,
   BsFillClipboard2HeartFill,
-  BsFillCaretDownFill,
-  
+  BsFillCaretDownFill
 } from 'react-icons/bs'
 import { BiSolidUser, BiSolidExit, BiSolidTimeFive } from 'react-icons/bi'
 import {
   TbLayoutSidebarLeftExpandFilled,
   TbLayoutSidebarRightExpandFilled
 } from 'react-icons/tb'
+import { FaQuestionCircle } from 'react-icons/fa'
 import { FaRunning } from 'react-icons/fa'
 import { useNavigate } from 'react-router'
 
@@ -32,7 +32,11 @@ const items = [
   {
     type: 'divider'
   },
-  getItem('Tracking', 'tracking', <BiSolidTimeFive className='!text-[1.2rem]' />),
+  getItem(
+    'Tracking',
+    'tracking',
+    <BiSolidTimeFive className='!text-[1.2rem]' />
+  ),
   {
     type: 'divider'
   },
@@ -40,21 +44,25 @@ const items = [
   {
     type: 'divider'
   },
-  getItem('Jobs', 'jobs', <BsFillClipboard2Fill className='!text-[1.2rem]' />, [
-    getItem(
-      'Add new',
-      'new-vacancy',
-      <BsFillClipboard2PlusFill className='!text-[1.2rem]' />
-    ),
-    getItem(
-      'Posted',
-      'posted-vacancy',
-      <BsFillClipboard2HeartFill className='!text-[1.2rem]' />
-    )
-  ]),
+  getItem('Faq', 'faq', <FaQuestionCircle className='!text-[1.2rem]' />),
   {
     type: 'divider'
   }
+  // getItem('Jobs', 'jobs', <BsFillClipboard2Fill className='!text-[1.2rem]' />, [
+  //   getItem(
+  //     'Add new',
+  //     'new-vacancy',
+  //     <BsFillClipboard2PlusFill className='!text-[1.2rem]' />
+  //   ),
+  //   getItem(
+  //     'Posted',
+  //     'posted-vacancy',
+  //     <BsFillClipboard2HeartFill className='!text-[1.2rem]' />
+  //   )
+  // ]),
+  // {
+  //   type: 'divider'
+  // }
   // getItem(
   //   'Analytics',
   //   'grp',
@@ -74,7 +82,9 @@ const Layout = () => {
       navigate('tracking')
     } else if (e.key === 'profile') {
       navigate('/profile')
-    } 
+    } else if (e.key === 'faq') {
+      navigate('/faq')
+    }
     // else if (e.key === 'new-vacancy') {
     //   navigate('/user/jobs/new')
     // } else if (e.key === 'posted-vacancy') {
