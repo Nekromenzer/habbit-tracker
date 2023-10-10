@@ -162,13 +162,16 @@ const Habits = () => {
       }
     },
     {
-      title: 'operation',
-      dataIndex: 'operation',
+      title: 'Delete',
+      dataIndex: 'delete',
       render: (_, record) =>
         data.length >= 1 ? (
           <Popconfirm
             title='Sure to delete?'
             onConfirm={() => handleDelete(record.key)}
+            okButtonProps={{
+              className: 'bg-green-500 hover:!bg-green-400'
+            }}
           >
             <MdDelete className='text-xl text-red-500 hover:text-red-400 cursor-pointer' />
           </Popconfirm>
