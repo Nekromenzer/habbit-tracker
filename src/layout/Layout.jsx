@@ -4,14 +4,16 @@ import {
   BsFillClipboard2Fill,
   BsFillClipboard2PlusFill,
   BsFillClipboard2HeartFill,
-  BsFillCaretDownFill
+  BsFillCaretDownFill,
+  
 } from 'react-icons/bs'
-import { BiSolidUser, BiSolidExit } from 'react-icons/bi'
+import { BiSolidUser, BiSolidExit, BiSolidTimeFive } from 'react-icons/bi'
 import {
   TbLayoutSidebarLeftExpandFilled,
   TbLayoutSidebarRightExpandFilled
 } from 'react-icons/tb'
 import { FaRunning } from 'react-icons/fa'
+import { useNavigate } from 'react-router'
 
 import { Menu } from 'antd'
 import { useState } from 'react'
@@ -27,6 +29,10 @@ function getItem (label, key, icon, children, type) {
 }
 const items = [
   getItem('Habits', 'habits', <FaRunning className='!text-[1.2rem]' />),
+  {
+    type: 'divider'
+  },
+  getItem('Tracking', 'tracking', <BiSolidTimeFive className='!text-[1.2rem]' />),
   {
     type: 'divider'
   },
@@ -60,7 +66,19 @@ const items = [
 
 const Layout = () => {
   const [expand, setExpand] = useState(true)
+  const navigate = useNavigate()
   const onClick = e => {
+    if (e.key === 'habits') {
+      navigate('/')
+    } else if (e.key === 'tracking') {
+      navigate('tracking')
+    } else if (e.key === 'tracking2') {
+      navigate('/profile')
+    } else if (e.key === 'new-vacancy') {
+      navigate('/user/jobs/new')
+    } else if (e.key === 'posted-vacancy') {
+      navigate('/user/jobs/posted')
+    }
     console.log('click ', e)
   }
   return (
@@ -82,9 +100,7 @@ const Layout = () => {
             size='large'
             src='https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
           />
-          {expand && (
-            <span className='text-md font-semibold'>James</span>
-          )}
+          {expand && <span className='text-md font-semibold'>James</span>}
         </div>
         <Menu
           theme='light'

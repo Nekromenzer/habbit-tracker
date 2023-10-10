@@ -5,6 +5,7 @@ import HandleAuth from './auth/HandleAuth'
 import Layout from './layout/Layout'
 // import Dashboard from './pages/dashboard/Dashboard'
 import Habits from './pages/user/Habits'
+import Tracking from './pages/user/Tracking'
 
 function App () {
   return (
@@ -14,6 +15,7 @@ function App () {
       <Route element={<HandleAuth />}>
         <Route element={<Layout />}>
           <Route path='/' element={<Habits />} />
+          <Route path='/tracking' element={<Tracking />} />
         </Route>
       </Route>
     </Routes>
