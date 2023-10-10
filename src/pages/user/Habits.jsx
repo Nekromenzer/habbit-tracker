@@ -1,6 +1,14 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react'
-import { Form, Input, InputNumber, Popconfirm, Table, Typography } from 'antd'
+import {
+  Form,
+  Input,
+  InputNumber,
+  Popconfirm,
+  Table,
+  Typography,
+  Button
+} from 'antd'
 import PageWrapper from '../../components/PageWrapper'
 import { MdDelete, MdEditDocument } from 'react-icons/md'
 
@@ -183,9 +191,87 @@ const Habits = () => {
       })
     }
   })
+
   return (
     <PageWrapper header='HABITS'>
-      <Form form={form} component={false}>
+      {/* add form */}
+      <Form
+        form={form}
+        name='add-habit'
+        layout='inline'
+        // labelCol={{
+        //   span: 4
+        // }}
+        // wrapperCol={{
+        //   span: 20
+        // }}
+        className='mb-12'
+      >
+        <Form.Item
+          name='name'
+          label='Name'
+          rules={[
+            {
+              required: true,
+              message: 'Please input name!'
+            }
+          ]}
+          className='xl:min-w-[25%]'
+          // wrapperCol={{
+          //   span: 20
+          // }}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name='description'
+          label='Description'
+          rules={[
+            {
+              required: true,
+              message: 'Please input description!'
+            }
+          ]}
+          className='xl:min-w-[25%]'
+          // wrapperCol={{
+          //   span: 8
+          // }}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name='target_value'
+          label='Target Value'
+          rules={[
+            {
+              required: true,
+              message: 'Please input target value!'
+            }
+          ]}
+          className='xl:min-w-[20%]'
+          // wrapperCol={{
+          //   span: 4
+          // }}
+        >
+          <InputNumber />
+        </Form.Item>
+        <Form.Item
+          wrapperCol={{
+            span: 24
+          }}
+        >
+          <Button
+            size='middle'
+            type='primary'
+            htmlType='submit'
+            className=' w-[10rem] bg-blue-800'
+          >
+            Add
+          </Button>
+        </Form.Item>
+      </Form>
+      {/* table */}
+      <Form form={form} component={false} name='table-edit'>
         <Table
           bordered
           loading={false}
