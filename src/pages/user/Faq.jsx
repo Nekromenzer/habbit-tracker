@@ -185,7 +185,7 @@ const Faq = () => {
           </Form.Item>
         </Form>
       </div>
-      <Collapse items={items} defaultActiveKey={['1']} />
+      <Collapse items={items} />
     </PageWrapper>
   )
 }
