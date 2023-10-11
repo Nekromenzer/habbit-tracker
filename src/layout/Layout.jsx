@@ -1,9 +1,9 @@
 import { Col, Row, Avatar } from 'antd'
 import { Outlet } from 'react-router'
 import {
-  BsFillClipboard2Fill,
-  BsFillClipboard2PlusFill,
-  BsFillClipboard2HeartFill,
+  // BsFillClipboard2Fill,
+  // BsFillClipboard2PlusFill,
+  // BsFillClipboard2HeartFill,
   BsFillCaretDownFill
 } from 'react-icons/bs'
 import { BiSolidUser, BiSolidExit, BiSolidTimeFive } from 'react-icons/bi'
