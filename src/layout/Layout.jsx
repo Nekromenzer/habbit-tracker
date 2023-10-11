@@ -142,6 +142,10 @@ const Layout = ({ admin }) => {
           className={`px-2 py-2 h-[2rem] mt-auto flex gap-4 items-center cursor-pointer duration-300 transition ease-in delay-150 rounded ${
             expand ? 'mx-[24px]' : 'mx-auto'
           } mb-2 hover:bg-red-500 hover:shadow group`}
+          onClick={()=>{
+            localStorage.removeItem('userToken')
+            navigate('/sign-in')
+          }}
         >
           <BiSolidExit className='text-2xl group-hover:text-white' />
           {expand && (
