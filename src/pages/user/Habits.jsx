@@ -7,10 +7,13 @@ import {
   Popconfirm,
   Table,
   Typography,
-  Button
+  Button,
+  notification
 } from 'antd'
 import PageWrapper from '../../components/PageWrapper'
 import { MdDelete, MdEditDocument } from 'react-icons/md'
+import { FaSadCry, FaSmile } from 'react-icons/fa'
+import handleApiCall from '../../api/handleApiCall'
 
 const originData = []
 for (let i = 0; i < 11; i++) {
@@ -25,8 +28,12 @@ for (let i = 0; i < 11; i++) {
 
 const Habits = () => {
   const [form] = Form.useForm()
+  const [addForm] = Form.useForm()
   const [data, setData] = useState(originData)
   const [editingKey, setEditingKey] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [tableData, setTableData] = useState([])
+
   const isEditing = record => record.key === editingKey
   const edit = record => {
     form.setFieldsValue({
@@ -195,20 +202,70 @@ const Habits = () => {
     }
   })
 
+  const openNotification = () => {
+    notification.open({
+      message: 'Something went wrong!',
+      icon: <FaSadCry className='text-yellow-500' />,
+      description:
+        'Try again with valid credentials or check your internet connection.',
+      onClick: () => {
+        console.log('Notification Clicked!')
+      }
+    })
+  }
+
+  const fetchHabit = () => {
+    handleApiCall({
+      urlType: 'getUserHabit',
+      variant: 'habit',
+      setLoading,
+      cb: (data, status) => {
+        if (status === 200) {
+          // update table
+          setTableData(data)
+        } else {
+          openNotification()
+        }
+      }
+    })
+  }
+
+  const onFinish = values => {
+    handleApiCall({
+      urlType: 'createHabit',
+      variant: 'habit',
+      setLoading,
+      data: values,
+      cb: (data, status) => {
+        if (status === 200) {
+          notification.open({
+            message: 'Habit Added!',
+            icon: <FaSmile className='text-green-500' />,
+            description: 'Habit added successfully.'
+          })
+          // update table
+          fetchHabit()
+        } else {
+          openNotification()
+        }
+      }
+    })
+  }
+
+  const onFinishFailed = errorInfo => {
+    console.log('Failed:', errorInfo)
+  }
+
   return (
     <PageWrapper header='HABITS'>
       {/* add form */}
       <Form
-        form={form}
+        form={addForm}
         name='add-habit'
         layout='inline'
-        // labelCol={{
-        //   span: 4
-        // }}
-        // wrapperCol={{
-        //   span: 20
-        // }}
         className='mb-12'
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
       >
         <Form.Item
           name='name'
@@ -220,9 +277,6 @@ const Habits = () => {
             }
           ]}
           className='xl:min-w-[25%]'
-          // wrapperCol={{
-          //   span: 20
-          // }}
         >
           <Input />
         </Form.Item>
@@ -277,7 +331,7 @@ const Habits = () => {
       <Form form={form} component={false} name='table-edit'>
         <Table
           bordered
-          loading={false}
+          loading={loading}
           size='small'
           components={{
             body: {

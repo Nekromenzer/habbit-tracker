@@ -17,7 +17,7 @@ const handleApiCall = ({
 }) => {
   const url = `${baseUrl}${urlDoc[variant][urlType]?.url}${urlParams}`
   const method = urlDoc[variant][urlType]?.type
-
+  console.log(url)
   async function handelCall () {
     setLoading(true)
     try {

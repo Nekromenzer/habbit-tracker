@@ -10,18 +10,19 @@ const urlDoc = {
     setAccountDelete: { url: '/api/user/profile/delete-request', type: 'post' },
     // admin
     deleteAccount: { url: '/api/user/profile', type: 'delete' },
-    getAccountDelete: { url: 'api/user/profile/delete-request', type: 'get' }
+    getAccountDelete: { url: '/api/user/profile/delete-request', type: 'get' }
   },
   habit: {
-    createPreHabits: { url: 'api/habit/predefined-habit/', type: 'post' },
-    deletePreHabits: { url: 'api/habit/predefined-habit/', type: 'delete' },
-    editPreHabits: { url: 'api/habit/predefined-habit/', type: 'patch' },
-    createHabit: { url: 'api/habit/', type: 'post' },
+    createPreHabits: { url: '/api/habit/predefined-habit', type: 'post' },
+    deletePreHabits: { url: '/api/habit/predefined-habit', type: 'delete' },
+    editPreHabits: { url: '/api/habit/predefined-habit/', type: 'patch' },
+    createHabit: { url: '/api/habit/', type: 'post' },
     // getUserHabitById we can use same endpoint for both
-    getUserHabit: { url: 'api/habit/', type: 'get' },
-    editHabit: { url: 'api/habit/', type: 'delete' },
-    logHabitProgress: { url: 'api/habit/log-progress', type: 'post' },
-    getHabitProgress: { url: 'api/habit/progress', type: 'get' }
+    getUserHabit: { url: '/api/habit', type: 'get' },
+    editHabit: { url: '/api/habit/', type: 'patch' },
+    deleteHabit: { url: '/api/habit', type: 'delete' },
+    logHabitProgress: { url: '/api/habit/log-progress', type: 'post' },
+    getHabitProgress: { url: '/api/habit/progress', type: 'get' }
   }
 }
 
