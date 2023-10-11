@@ -15,7 +15,7 @@ import HandleNotFound from './auth/HandleNotfound'
 
 function App () {
   // const isAdmin = localStorage.getItem('isAdmin') || false
-  const userType = 'admin'
+  const userType = 'user'
 
   return (
     <Routes>

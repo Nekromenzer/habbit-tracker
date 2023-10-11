@@ -1,12 +1,65 @@
 import { useState } from 'react'
-import { Button, Form, Input } from 'antd'
+import { Button, Form, Input, notification, InputNumber } from 'antd'
+import handleApiCall from '../../api/handleApiCall'
+import { FaSadCry } from 'react-icons/fa'
+import { Navigate, useNavigate } from 'react-router'
 
 const SignIn = () => {
   const [isSignIn, setIsSignIn] = useState(true)
+  const navigate = useNavigate()
+
+  const openNotification = () => {
+    notification.open({
+      message: 'Somrthing went wrong!',
+      icon: <FaSadCry className='text-yellow-500' />,
+      description:
+        'Try again with valid credentials or check your internet connection.',
+      onClick: () => {
+        console.log('Notification Clicked!')
+      }
+    })
+  }
+
+  const handleCallBack = (data, status) => {
+    console.log(data, status)
+    navigate('/admin')
+    if (status === 200) {
+      localStorage.setItem('userToken', data.token)
+      // need to set whether admin or not
+      localStorage.setItem('isAdmin', data.user.isAdmin)
+      //redirect to dashboard  page
+      if (data.user.isAdmin) {
+        return navigate('/admin')
+      }
+      return navigate('/')
+    } else {
+      openNotification()
+    }
+  }
 
   const onFinish = values => {
-    console.log('Success:', values)
+    if (isSignIn) {
+      //login
+      handleApiCall({
+        urlType: 'login',
+        variant: 'user',
+        data: values,
+        cb: (data, status) => {
+          handleCallBack(data, status)
+        }
+      })
+    } else {
+      handleApiCall({
+        urlType: 'register',
+        variant: 'user',
+        data: values,
+        cb: (data, status) => {
+          handleCallBack(data, status)
+        }
+      })
+    }
   }
+
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo)
   }
@@ -152,7 +205,11 @@ const SignIn = () => {
                   marginBottom: '5px'
                 }}
               >
-                <Input placeholder='21' />
+                <InputNumber
+                  placeholder='21'
+                  className='w-full'
+                  suffix='years'
+                />
               </Form.Item>
 
               <Form.Item
@@ -169,7 +226,11 @@ const SignIn = () => {
                   width: 'calc(50% - 8px)'
                 }}
               >
-                <Input placeholder='169cm' />
+                <InputNumber
+                  placeholder='169cm'
+                  className='w-full'
+                  suffix='cm'
+                />
               </Form.Item>
 
               <Form.Item
@@ -187,7 +248,11 @@ const SignIn = () => {
                   margin: '0 8px'
                 }}
               >
-                <Input placeholder='60kg' />
+                <InputNumber
+                  placeholder='60kg'
+                  className='w-full'
+                  suffix='kg'
+                />
               </Form.Item>
             </>
           )}
@@ -211,15 +276,12 @@ const SignIn = () => {
         </Form>
         <div className='flex gap-4 mt-6 justify-center'>
           <span>
-            {isSignIn
-              ? "Don't you have account ?"
-              : 'Already have an account'}
+            {isSignIn ? "Don't you have account ?" : 'Already have an account'}
           </span>
           <span
             onClick={() => {
               form.resetFields()
               setIsSignIn(!isSignIn)
-              
             }}
             className='text-blue-500 underline'
           >
