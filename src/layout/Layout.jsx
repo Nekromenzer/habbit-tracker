@@ -27,6 +27,13 @@ function getItem (label, key, icon, children, type) {
     type
   }
 }
+
+const adminItems = [
+  getItem('Habits', 'habits', <FaRunning className='!text-[1.2rem]' />),
+  {
+    type: 'divider'
+  }
+]
 const items = [
   getItem('Habits', 'habits', <FaRunning className='!text-[1.2rem]' />),
   {
@@ -72,25 +79,26 @@ const items = [
   // )
 ]
 
-const Layout = () => {
+// eslint-disable-next-line react/prop-types
+const Layout = ({ admin }) => {
   const [expand, setExpand] = useState(true)
   const navigate = useNavigate()
   const onClick = e => {
-    if (e.key === 'habits') {
-      navigate('/')
-    } else if (e.key === 'tracking') {
-      navigate('tracking')
-    } else if (e.key === 'profile') {
-      navigate('/profile')
-    } else if (e.key === 'faq') {
-      navigate('/faq')
+    if (admin) {
+      if (e.key === 'habits') {
+        navigate('/admin')
+      }
+    } else {
+      if (e.key === 'habits') {
+        navigate('/')
+      } else if (e.key === 'tracking') {
+        navigate('tracking')
+      } else if (e.key === 'profile') {
+        navigate('/profile')
+      } else if (e.key === 'faq') {
+        navigate('/faq')
+      }
     }
-    // else if (e.key === 'new-vacancy') {
-    //   navigate('/user/jobs/new')
-    // } else if (e.key === 'posted-vacancy') {
-    //   navigate('/user/jobs/posted')
-    // }
-    // console.log('click ', e)
   }
   return (
     <Row>
@@ -111,7 +119,11 @@ const Layout = () => {
             size='large'
             src='https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
           />
-          {expand && <span className='text-md font-semibold'>James</span>}
+          {expand && (
+            <span className='text-md font-semibold'>
+              {admin ? 'Welcome admin' : 'James'}
+            </span>
+          )}
         </div>
         <Menu
           theme='light'
@@ -122,9 +134,8 @@ const Layout = () => {
             width: expand ? 256 : 60
           }}
           defaultSelectedKeys={['habits']}
-          defaultOpenKeys={['jobs']}
           mode='inline'
-          items={items}
+          items={admin ? adminItems : items}
           className='bg-blue-100'
         />
         <div
