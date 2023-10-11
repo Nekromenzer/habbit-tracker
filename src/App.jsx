@@ -24,6 +24,7 @@ function App () {
       {/* protected routes */}
       <Route element={<HandleAuth />}>
         <Route element={<Layout admin={userType === 'admin'} />}>
+          {/* user layouts */}
           <Route
             path='/'
             element={<HandleUserLevels userType={userType === 'user'} />}
@@ -42,6 +43,7 @@ function App () {
           </Route>
         </Route>
       </Route>
+      {/* 404 page */}
       <Route path='404' element={<NotFound />} />
       <Route path='*' element={<HandleNotFound to='/404' />} />
     </Routes>
