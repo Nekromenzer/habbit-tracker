@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button, Form, Input, notification, InputNumber } from 'antd'
 import handleApiCall from '../../api/handleApiCall'
 import { FaSadCry } from 'react-icons/fa'
-import { Navigate, useNavigate } from 'react-router'
+import { useNavigate } from 'react-router'
 import LoadingAnimation from '../../components/LoadingAnimation'
 
 const SignIn = () => {
@@ -11,7 +11,7 @@ const SignIn = () => {
 
   const openNotification = () => {
     notification.open({
-      message: 'Somrthing went wrong!',
+      message: 'Something went wrong!',
       icon: <FaSadCry className='text-yellow-500' />,
       description:
         'Try again with valid credentials or check your internet connection.',

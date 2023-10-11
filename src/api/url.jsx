@@ -7,8 +7,9 @@ const urlDoc = {
     // edit user
     editUser: { url: '/api/user/profile', type: 'patch' },
     // delete profile
+    setAccountDelete: { url: '/api/user/profile/delete-request', type: 'post' },
+    // admin
     deleteAccount: { url: '/api/user/profile', type: 'delete' },
-    setAccountDelete: { url: 'api/user/profile/delete-request', type: 'post' },
     getAccountDelete: { url: 'api/user/profile/delete-request', type: 'get' }
   },
   habit: {

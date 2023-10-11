@@ -1,12 +1,61 @@
 import PageWrapper from '../../components/PageWrapper'
-import { Form, Input, Button, Popconfirm } from 'antd'
+import {
+  Form,
+  Input,
+  Button,
+  Popconfirm,
+  notification,
+  InputNumber
+} from 'antd'
 import { useState } from 'react'
 import { AiOutlineWarning } from 'react-icons/ai'
+import handleApiCall from '../../api/handleApiCall'
+import { FaSadCry, FaSmile } from 'react-icons/fa'
+import { MdCancel } from 'react-icons/md'
+import LoadingAnimation from '../../components/LoadingAnimation'
 
 const Profile = () => {
   const [reason, setReason] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const openNotification = () => {
+    notification.open({
+      message: 'Something went wrong!',
+      icon: <FaSadCry className='text-yellow-500' />,
+      description:
+        'Try again with valid credentials or check your internet connection.',
+      onClick: () => {
+        console.log('Notification Clicked!')
+      }
+    })
+  }
+
   const onFinish = values => {
-    console.log('Success:', values)
+    const dataObj = {
+      name: values.name,
+      age: values.age,
+      height: values.height,
+      weight: values.weight,
+      job_type: values.job_type
+    }
+    handleApiCall({
+      urlType: 'editUser',
+      variant: 'user',
+      setLoading,
+      data: dataObj,
+      cb: (data, status) => {
+        if (status === 200) {
+          notification.open({
+            message: 'Profile Updated!',
+            icon: <FaSmile className='text-green-500' />,
+            description: 'Profile updated successfully.'
+          })
+          // update profile
+        } else {
+          openNotification()
+        }
+      }
+    })
   }
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo)
@@ -19,37 +68,41 @@ const Profile = () => {
   const [form] = Form.useForm()
   return (
     <PageWrapper header='Profile'>
-      <div className='flex gap-[15rem]'>
-        <Form
-          form={form}
-          name='profile'
-          preserve={false}
-          labelCol={{
-            span: 24
-          }}
-          wrapperCol={{
-            span: 24
-          }}
-          style={{
-            maxWidth: 600
-          }}
-          initialValues={{
-            remember: true
-          }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete='off'
-        >
-          <Form.Item
-            label='Name'
-            name='name'
-            rules={[{ required: true, message: 'Please enter your name' }]}
-            style={formItemStyles}
+      <LoadingAnimation
+        loading={loading}
+        tip={reason.length ? 'Deleting profile' : 'Updating profile'}
+      >
+        <div className='flex flex-wrap gap-[15rem]'>
+          <Form
+            form={form}
+            name='profile'
+            preserve={false}
+            labelCol={{
+              span: 24
+            }}
+            wrapperCol={{
+              span: 24
+            }}
+            style={{
+              maxWidth: 600
+            }}
+            initialValues={{
+              remember: true
+            }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete='off'
           >
-            <Input />
-          </Form.Item>
+            <Form.Item
+              label='Name'
+              name='name'
+              rules={[{ required: true, message: 'Please enter your name' }]}
+              style={formItemStyles}
+            >
+              <Input />
+            </Form.Item>
 
-          <Form.Item
+            {/* <Form.Item
             label='Email'
             name='email'
             rules={[
@@ -62,9 +115,9 @@ const Profile = () => {
             style={formItemStyles}
           >
             <Input disabled />
-          </Form.Item>
+          </Form.Item> */}
 
-          <Form.Item
+            {/* <Form.Item
             label='Password'
             name='password'
             rules={[
@@ -102,128 +155,153 @@ const Profile = () => {
             style={formItemStyles}
           >
             <Input.Password />
-          </Form.Item>
+          </Form.Item> */}
 
-          <Form.Item
-            label='Job type'
-            name='job_type'
-            rules={[
-              {
-                required: true,
-                message: 'Please enter your Job Type!'
-              }
-            ]}
-            style={{
-              display: 'inline-block',
-              width: 'calc(50% - 8px)'
-            }}
-          >
-            <Input placeholder='IT' />
-          </Form.Item>
-
-          <Form.Item
-            label='Age'
-            name='age'
-            rules={[
-              {
-                required: true,
-                message: 'Please enter your Age!'
-              }
-            ]}
-            style={{
-              display: 'inline-block',
-              width: 'calc(50% - 8px)',
-              margin: '0 8px',
-              marginBottom: '5px'
-            }}
-          >
-            <Input placeholder='21' />
-          </Form.Item>
-
-          <Form.Item
-            label='Height'
-            name='height'
-            rules={[
-              {
-                required: true,
-                message: 'Please enter your Height!'
-              }
-            ]}
-            style={{
-              display: 'inline-block',
-              width: 'calc(50% - 8px)'
-            }}
-          >
-            <Input placeholder='169cm' />
-          </Form.Item>
-
-          <Form.Item
-            label='Weight'
-            name='weight'
-            rules={[
-              {
-                required: true,
-                message: 'Please enter your Weight!'
-              }
-            ]}
-            style={{
-              display: 'inline-block',
-              width: 'calc(50% - 8px)',
-              margin: '0 8px'
-            }}
-          >
-            <Input placeholder='60kg' />
-          </Form.Item>
-
-          {/* submit */}
-          <Form.Item
-            wrapperCol={{
-              span: 24
-            }}
-            className='!flex justify-center'
-          >
-            <Button
-              size='middle'
-              type='primary'
-              htmlType='submit'
-              className='!mt-8 w-[20rem] bg-blue-800 !ml-auto'
+            <Form.Item
+              label='Job type'
+              name='job_type'
+              rules={[
+                {
+                  required: true,
+                  message: 'Please enter your Job Type!'
+                }
+              ]}
+              style={{
+                display: 'inline-block',
+                width: 'calc(50% - 8px)'
+              }}
             >
-              Submit
-            </Button>
-          </Form.Item>
-        </Form>
-        <div className='rounded-xl p-4 py-8 bg-red-50  h-[10rem]  max-h-[20rem] w-[30rem] shadow'>
-          <div className='flex gap-5 items-center'>
-            <span className='text-xl'>Delete Account</span>
-            <AiOutlineWarning className='text-red-500' />
+              <Input placeholder='IT' />
+            </Form.Item>
+
+            <Form.Item
+              label='Age'
+              name='age'
+              rules={[
+                {
+                  required: true,
+                  message: 'Please enter your Age!'
+                }
+              ]}
+              style={{
+                display: 'inline-block',
+                width: 'calc(50% - 8px)',
+                margin: '0 8px',
+                marginBottom: '5px'
+              }}
+            >
+              <InputNumber placeholder='21' suffix='years' className='w-full' />
+            </Form.Item>
+
+            <Form.Item
+              label='Height'
+              name='height'
+              rules={[
+                {
+                  required: true,
+                  message: 'Please enter your Height!'
+                }
+              ]}
+              style={{
+                display: 'inline-block',
+                width: 'calc(50% - 8px)'
+              }}
+            >
+              <InputNumber placeholder='169cm' suffix='cm' className='w-full' />
+            </Form.Item>
+
+            <Form.Item
+              label='Weight'
+              name='weight'
+              rules={[
+                {
+                  required: true,
+                  message: 'Please enter your Weight!'
+                }
+              ]}
+              style={{
+                display: 'inline-block',
+                width: 'calc(50% - 8px)',
+                margin: '0 8px'
+              }}
+            >
+              <InputNumber placeholder='60kg' suffix='kg' className='w-full' />
+            </Form.Item>
+
+            {/* submit */}
+            <Form.Item
+              wrapperCol={{
+                span: 24
+              }}
+              className='!flex justify-center'
+            >
+              <Button
+                size='middle'
+                type='primary'
+                htmlType='submit'
+                className='!mt-8 w-[20rem] bg-blue-800 !ml-auto'
+              >
+                Submit
+              </Button>
+            </Form.Item>
+          </Form>
+
+          <div className='rounded-xl p-4 py-8 bg-red-50  h-[10rem]  max-h-[20rem] w-[30rem] shadow'>
+            <div className='flex gap-5 items-center'>
+              <span className='text-xl'>Delete Account</span>
+              <AiOutlineWarning className='text-red-500' />
+            </div>
+            <div className='tracking-wider text-sm py-2'>
+              You cant revert this action!
+            </div>
+            <Popconfirm
+              title='Please note reason for account delete'
+              description={
+                <div className='w-[30rem]'>
+                  <Input
+                    placeholder='Description'
+                    size='small'
+                    value={reason}
+                    onChange={e => setReason(e.target.value)}
+                  />
+                </div>
+              }
+              onConfirm={() => {
+                handleApiCall({
+                  urlType: 'setAccountDelete',
+                  variant: 'user',
+                  setLoading,
+                  data: {
+                    description: reason
+                  },
+                  cb: (data, status) => {
+                    if (status === 200) {
+                      notification.open({
+                        message: 'Account Deleted!',
+                        icon: <MdCancel className='text-red-500' />,
+                        description: 'Account deleted successfully.'
+                      })
+                      setReason('')
+                      localStorage.removeItem('userToken')
+                    } else {
+                      setReason('')
+                      openNotification()
+                    }
+                  }
+                })
+              }}
+              okButtonProps={{
+                className: 'bg-red-500 hover:!bg-red-800',
+                disabled: reason.length === 0
+              }}
+            >
+              <Button type='primary' danger>
+                Proceed to delete!
+              </Button>
+            </Popconfirm>
           </div>
-          <div className='tracking-wider text-sm py-2'>
-            You cant revert this action!
-          </div>
-          <Popconfirm
-            title='Please note reason for account delete'
-            description={
-              <div className='w-[30rem]'>
-                <Input
-                  placeholder='Description'
-                  size='small'
-                  value={reason}
-                  onChange={e => setReason(e.target.value)}
-                />
-              </div>
-            }
-            onConfirm={() => console.log('api call to delete account')}
-            okButtonProps={{
-              className: 'bg-red-500 hover:!bg-red-800',
-              disabled: reason.length === 0
-            }}
-          >
-            <Button type='primary' danger>
-              Proceed to delete!
-            </Button>
-          </Popconfirm>
         </div>
-      </div>
+      </LoadingAnimation>
     </PageWrapper>
   )
 }
