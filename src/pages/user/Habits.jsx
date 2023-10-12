@@ -77,42 +77,15 @@ const Habits = () => {
     setEditingKey('')
   }
 
-    // edit record api call
-    const handleEdit = record => {
-      form.setFieldsValue({
-        name: '',
-        age: '',
-        address: '',
-        ...record
-      })
-      setEditingKey(record.key)
-
-      const data = {
-        description: record.description,
-        target_value: record.target_value,
-        name: record.name
-      }
-    
-      handleApiCall({
-        urlType: 'editHabit',
-        variant: 'habit',
-        setLoading,
-        data: data,
-        urlParams: `${record.key}`,
-        cb: (data, status) => {
-          if (status === 200) {
-            notification.open({
-              message: 'Habit Edited!',
-              icon: <FaSmile className='text-green-500' />,
-              description: 'Habit edited successfully.'
-            })
-            fetchHabit()
-          } else {
-            openNotification()
-          }
-        }
-      })
-    }
+  const handleEdit = record => {
+    form.setFieldsValue({
+      name: '',
+      description: '',
+      target_value: null,
+      ...record
+    })
+    setEditingKey(record.key)
+  }
 
   // delete habit
   const handleDelete = key => {
@@ -151,10 +124,34 @@ const Habits = () => {
           ...item,
           ...row
         })
+        const data = {
+          description: row.description,
+          target_value: row.target_value,
+          name: row.name
+        }
+      
+        handleApiCall({
+          urlType: 'editHabit',
+          variant: 'habit',
+          setLoading,
+          data: data,
+          urlParams: `${key}`,
+          cb: (data, status) => {
+            if (status === 200) {
+              notification.open({
+                message: 'Habit Edited!',
+                icon: <FaSmile className='text-green-500' />,
+                description: 'Habit edited successfully.'
+              })
+              fetchHabit()
+            } else {
+              openNotification()
+            }
+          }
+        })
         setData(newData)
         setEditingKey('')
       } else {
-        console.log(row, 'row')
         newData.push(row)
         setData(newData)
         setEditingKey('')
