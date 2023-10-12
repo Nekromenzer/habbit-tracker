@@ -17,6 +17,7 @@ const urlDoc = {
     postHelp: { url: '/api/user/help-center', type: 'post' }
   },
   habit: {
+    getPreHabits: { url: '/api/habit/predefined-habit', type: 'get' },
     createPreHabits: { url: '/api/habit/predefined-habit', type: 'post' },
     deletePreHabits: { url: '/api/habit/predefined-habit', type: 'delete' },
     editPreHabits: { url: '/api/habit/predefined-habit/', type: 'patch' },
@@ -26,7 +27,9 @@ const urlDoc = {
     editHabit: { url: '/api/habit/', type: 'patch' },
     deleteHabit: { url: '/api/habit/', type: 'delete' },
     logHabitProgress: { url: '/api/habit/log-progress', type: 'post' },
-    getHabitProgress: { url: '/api/habit/progress', type: 'get' }
+    getHabitProgress: { url: '/api/habit/progress', type: 'get' },
+    // admin help center
+    getUsersQuestions: { url: '/api/user/help-center', type: 'get' }
   }
 }
 

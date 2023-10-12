@@ -12,10 +12,11 @@ import HandleUserLevels from './auth/HandleUserLevels'
 import AdminHabit from './pages/admin/AdminHabit'
 import NotFound from './pages/NotFound'
 import HandleNotFound from './auth/HandleNotfound'
+import AdminContact from './pages/admin/AdminContact'
 
 function App () {
   // const isAdmin = localStorage.getItem('isAdmin') || false
-  const userType = 'user'
+  const userType = 'admin'
 
   return (
     <Routes>
@@ -40,6 +41,7 @@ function App () {
             element={<HandleUserLevels userType={userType === 'admin'} />}
           >
             <Route path='/admin' element={<AdminHabit />} />
+            <Route path='/admin/contact' element={<AdminContact />} />
           </Route>
         </Route>
       </Route>

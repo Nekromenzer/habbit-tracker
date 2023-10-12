@@ -7,10 +7,14 @@ import {
   Popconfirm,
   Table,
   Typography,
-  Button
+  Button,
+  notification
 } from 'antd'
 import PageWrapper from '../../components/PageWrapper'
 import { MdDelete, MdEditDocument } from 'react-icons/md'
+import { FaSadCry, FaSmile } from 'react-icons/fa'
+import handleApiCall from '../../api/handleApiCall'
+import LoadingAnimation from '../../components/LoadingAnimation'
 
 const originData = []
 for (let i = 0; i < 11; i++) {
@@ -23,20 +27,15 @@ for (let i = 0; i < 11; i++) {
   })
 }
 
-const AdminHabit = () => {
+const AdminHabits = () => {
   const [form] = Form.useForm()
+  const [addForm] = Form.useForm()
   const [data, setData] = useState(originData)
   const [editingKey, setEditingKey] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [tableData, setTableData] = useState([])
+
   const isEditing = record => record.key === editingKey
-  const edit = record => {
-    form.setFieldsValue({
-      name: '',
-      age: '',
-      address: '',
-      ...record
-    })
-    setEditingKey(record.key)
-  }
 
   const EditableCell = ({
     editing,
@@ -78,10 +77,38 @@ const AdminHabit = () => {
     setEditingKey('')
   }
 
-  // delete
+  const handleEdit = record => {
+    form.setFieldsValue({
+      name: '',
+      description: '',
+      target_value: null,
+      ...record
+    })
+    setEditingKey(record.key)
+  }
+
+  // delete habit
   const handleDelete = key => {
     const dataSource = [...data]
     setData(dataSource.filter(item => item.key !== key))
+    handleApiCall({
+      urlType: 'deletePreHabits',
+      variant: 'habit',
+      setLoading,
+      urlParams: `${key}`,
+      cb: (data, status) => {
+        if (status === 200) {
+          notification.open({
+            message: 'Habit Deleted!',
+            icon: <FaSmile className='text-green-500' />,
+            description: 'Habit deleted successfully.'
+          })
+          fetchHabit()
+        } else {
+          openNotification()
+        }
+      }
+    })
   }
 
   // edit save function
@@ -97,10 +124,34 @@ const AdminHabit = () => {
           ...item,
           ...row
         })
+        const data = {
+          description: row.description,
+          target_value: row.target_value,
+          name: row.name
+        }
+      
+        handleApiCall({
+          urlType: 'editPreHabits',
+          variant: 'habit',
+          setLoading,
+          data: data,
+          urlParams: `${key}`,
+          cb: (data, status) => {
+            if (status === 200) {
+              notification.open({
+                message: 'Habit Edited!',
+                icon: <FaSmile className='text-green-500' />,
+                description: 'Habit edited successfully.'
+              })
+              fetchHabit()
+            } else {
+              openNotification()
+            }
+          }
+        })
         setData(newData)
         setEditingKey('')
       } else {
-        console.log(row, 'row')
         newData.push(row)
         setData(newData)
         setEditingKey('')
@@ -115,7 +166,7 @@ const AdminHabit = () => {
       title: 'Name',
       dataIndex: 'name',
       width: '25%',
-      editable: false
+      editable: true
     },
     {
       title: 'Description',
@@ -154,7 +205,7 @@ const AdminHabit = () => {
         ) : (
           <Typography.Link
             disabled={editingKey !== ''}
-            onClick={() => edit(record)}
+            onClick={() => handleEdit(record)}
           >
             <MdEditDocument className='text-xl text-blue-500 hover:text-blue-400 cursor-pointer' />
           </Typography.Link>
@@ -195,89 +246,141 @@ const AdminHabit = () => {
     }
   })
 
+  const openNotification = () => {
+    notification.open({
+      message: 'Something went wrong!',
+      icon: <FaSadCry className='text-yellow-500' />,
+      description:
+        'Try again with valid credentials or check your internet connection.',
+      onClick: () => {
+        console.log('Notification Clicked!')
+      }
+    })
+  }
+
+  // fetch all AdminHabits
+  const fetchHabit = () => {
+    handleApiCall({
+      urlType: 'getPreHabits',
+      variant: 'habit',
+      setLoading,
+      cb: (data, status) => {
+        if (status === 200) {
+          // update table
+          setTableData(data)
+        } else {
+          openNotification()
+        }
+      }
+    })
+  }
+
+  // api call to get habit
+  const onFinish = values => {
+    handleApiCall({
+      urlType: 'createPreHabits',
+      variant: 'habit',
+      setLoading,
+      data: values,
+      cb: (data, status) => {
+        if (status === 200) {
+          notification.open({
+            message: 'Habit Added!',
+            icon: <FaSmile className='text-green-500' />,
+            description: 'Habit added successfully.'
+          })
+          // update table
+          fetchHabit()
+        } else {
+          openNotification()
+        }
+      }
+    })
+  }
+
+  // log form errors
+  const onFinishFailed = errorInfo => {
+    console.log('Failed:', errorInfo)
+  }
+
   return (
-    <PageWrapper header='HABITS'>
+    <PageWrapper header='Admin Habits'>
       {/* add form */}
-      <Form
-        form={form}
-        name='add-habit'
-        layout='inline'
-        // labelCol={{
-        //   span: 4
-        // }}
-        // wrapperCol={{
-        //   span: 20
-        // }}
-        className='mb-12'
-      >
-        <Form.Item
-          name='name'
-          label='Name'
-          rules={[
-            {
-              required: true,
-              message: 'Please input name!'
-            }
-          ]}
-          className='xl:min-w-[25%]'
-          // wrapperCol={{
-          //   span: 20
-          // }}
+      <LoadingAnimation loading={loading}>
+        <Form
+          form={addForm}
+          name='add-habit'
+          layout='inline'
+          className='mb-12'
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
         >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name='description'
-          label='Description'
-          rules={[
-            {
-              required: true,
-              message: 'Please input description!'
-            }
-          ]}
-          className='xl:min-w-[25%]'
-          // wrapperCol={{
-          //   span: 8
-          // }}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name='target_value'
-          label='Target Value'
-          rules={[
-            {
-              required: true,
-              message: 'Please input target value!'
-            }
-          ]}
-          className='xl:min-w-[20%]'
-          // wrapperCol={{
-          //   span: 4
-          // }}
-        >
-          <InputNumber />
-        </Form.Item>
-        <Form.Item
-          wrapperCol={{
-            span: 24
-          }}
-        >
-          <Button
-            size='middle'
-            type='primary'
-            htmlType='submit'
-            className=' w-[10rem] bg-blue-800'
+          <Form.Item
+            name='name'
+            label='Name'
+            rules={[
+              {
+                required: true,
+                message: 'Please input name!'
+              }
+            ]}
+            className='xl:min-w-[25%]'
           >
-            Add
-          </Button>
-        </Form.Item>
-      </Form>
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name='description'
+            label='Description'
+            rules={[
+              {
+                required: true,
+                message: 'Please input description!'
+              }
+            ]}
+            className='xl:min-w-[25%]'
+            // wrapperCol={{
+            //   span: 8
+            // }}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name='target_value'
+            label='Target Value'
+            rules={[
+              {
+                required: true,
+                message: 'Please input target value!'
+              }
+            ]}
+            className='xl:min-w-[20%]'
+            // wrapperCol={{
+            //   span: 4
+            // }}
+          >
+            <InputNumber />
+          </Form.Item>
+          <Form.Item
+            wrapperCol={{
+              span: 24
+            }}
+          >
+            <Button
+              size='middle'
+              type='primary'
+              htmlType='submit'
+              className=' w-[10rem] bg-blue-800'
+            >
+              Add
+            </Button>
+          </Form.Item>
+        </Form>
+      </LoadingAnimation>
       {/* table */}
       <Form form={form} component={false} name='table-edit'>
         <Table
           bordered
-          loading={false}
+          loading={loading}
           size='small'
           components={{
             body: {
@@ -296,4 +399,4 @@ const AdminHabit = () => {
   )
 }
 
-export default AdminHabit
+export default AdminHabits

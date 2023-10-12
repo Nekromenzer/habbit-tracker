@@ -32,6 +32,10 @@ const adminItems = [
   getItem('Habits', 'habits', <FaRunning className='!text-[1.2rem]' />),
   {
     type: 'divider'
+  },
+  getItem('User Contact', 'contact', <FaQuestionCircle className='!text-[1.2rem]' />),
+  {
+    type: 'divider'
   }
 ]
 const items = [
@@ -87,6 +91,9 @@ const Layout = ({ admin }) => {
     if (admin) {
       if (e.key === 'habits') {
         navigate('/admin')
+      }
+      if (e.key === 'contact') {
+        navigate('/admin/contact')
       }
     } else {
       if (e.key === 'habits') {
