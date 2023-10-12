@@ -13,7 +13,7 @@ const handleApiCall = ({
   cb = returnData => returnData,
   setLoading = state => state,
   urlParams = '',
-  auth
+  auth = true
 }) => {
   const url = `${baseUrl}${urlDoc[variant][urlType]?.url}${urlParams}`
   const method = urlDoc[variant][urlType]?.type
