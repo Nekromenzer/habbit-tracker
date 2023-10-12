@@ -14,6 +14,7 @@ import PageWrapper from '../../components/PageWrapper'
 import { MdDelete, MdEditDocument } from 'react-icons/md'
 import { FaSadCry, FaSmile } from 'react-icons/fa'
 import handleApiCall from '../../api/handleApiCall'
+import LoadingAnimation from '../../components/LoadingAnimation'
 
 const originData = []
 for (let i = 0; i < 11; i++) {
@@ -35,15 +36,6 @@ const Habits = () => {
   const [tableData, setTableData] = useState([])
 
   const isEditing = record => record.key === editingKey
-  const edit = record => {
-    form.setFieldsValue({
-      name: '',
-      age: '',
-      address: '',
-      ...record
-    })
-    setEditingKey(record.key)
-  }
 
   const EditableCell = ({
     editing,
@@ -85,10 +77,65 @@ const Habits = () => {
     setEditingKey('')
   }
 
-  // delete
+    // edit record api call
+    const handleEdit = record => {
+      form.setFieldsValue({
+        name: '',
+        age: '',
+        address: '',
+        ...record
+      })
+      setEditingKey(record.key)
+
+      const data = {
+        description: record.description,
+        target_value: record.target_value,
+        name: record.name
+      }
+    
+      handleApiCall({
+        urlType: 'editHabit',
+        variant: 'habit',
+        setLoading,
+        data: data,
+        urlParams: `${record.key}`,
+        cb: (data, status) => {
+          if (status === 200) {
+            notification.open({
+              message: 'Habit Edited!',
+              icon: <FaSmile className='text-green-500' />,
+              description: 'Habit edited successfully.'
+            })
+            fetchHabit()
+          } else {
+            openNotification()
+          }
+        }
+      })
+    }
+
+  // delete habit
   const handleDelete = key => {
     const dataSource = [...data]
     setData(dataSource.filter(item => item.key !== key))
+    handleApiCall({
+      urlType: 'deleteHabit',
+      variant: 'habit',
+      setLoading,
+      urlParams: `${key}`,
+      cb: (data, status) => {
+        if (status === 200) {
+          notification.open({
+            message: 'Habit Deleted!',
+            icon: <FaSmile className='text-green-500' />,
+            description: 'Habit deleted successfully.'
+          })
+          fetchHabit()
+        } else {
+          openNotification()
+        }
+      }
+    })
   }
 
   // edit save function
@@ -122,7 +169,7 @@ const Habits = () => {
       title: 'Name',
       dataIndex: 'name',
       width: '25%',
-      editable: false
+      editable: true
     },
     {
       title: 'Description',
@@ -161,7 +208,7 @@ const Habits = () => {
         ) : (
           <Typography.Link
             disabled={editingKey !== ''}
-            onClick={() => edit(record)}
+            onClick={() => handleEdit(record)}
           >
             <MdEditDocument className='text-xl text-blue-500 hover:text-blue-400 cursor-pointer' />
           </Typography.Link>
@@ -214,6 +261,7 @@ const Habits = () => {
     })
   }
 
+  // fetch all habits
   const fetchHabit = () => {
     handleApiCall({
       urlType: 'getUserHabit',
@@ -230,6 +278,7 @@ const Habits = () => {
     })
   }
 
+  // api call to get habit
   const onFinish = values => {
     handleApiCall({
       urlType: 'createHabit',
@@ -252,6 +301,7 @@ const Habits = () => {
     })
   }
 
+  // log form errors
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo)
   }
@@ -259,74 +309,76 @@ const Habits = () => {
   return (
     <PageWrapper header='HABITS'>
       {/* add form */}
-      <Form
-        form={addForm}
-        name='add-habit'
-        layout='inline'
-        className='mb-12'
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-      >
-        <Form.Item
-          name='name'
-          label='Name'
-          rules={[
-            {
-              required: true,
-              message: 'Please input name!'
-            }
-          ]}
-          className='xl:min-w-[25%]'
+      <LoadingAnimation loading={loading}>
+        <Form
+          form={addForm}
+          name='add-habit'
+          layout='inline'
+          className='mb-12'
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
         >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name='description'
-          label='Description'
-          rules={[
-            {
-              required: true,
-              message: 'Please input description!'
-            }
-          ]}
-          className='xl:min-w-[25%]'
-          // wrapperCol={{
-          //   span: 8
-          // }}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name='target_value'
-          label='Target Value'
-          rules={[
-            {
-              required: true,
-              message: 'Please input target value!'
-            }
-          ]}
-          className='xl:min-w-[20%]'
-          // wrapperCol={{
-          //   span: 4
-          // }}
-        >
-          <InputNumber />
-        </Form.Item>
-        <Form.Item
-          wrapperCol={{
-            span: 24
-          }}
-        >
-          <Button
-            size='middle'
-            type='primary'
-            htmlType='submit'
-            className=' w-[10rem] bg-blue-800'
+          <Form.Item
+            name='name'
+            label='Name'
+            rules={[
+              {
+                required: true,
+                message: 'Please input name!'
+              }
+            ]}
+            className='xl:min-w-[25%]'
           >
-            Add
-          </Button>
-        </Form.Item>
-      </Form>
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name='description'
+            label='Description'
+            rules={[
+              {
+                required: true,
+                message: 'Please input description!'
+              }
+            ]}
+            className='xl:min-w-[25%]'
+            // wrapperCol={{
+            //   span: 8
+            // }}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name='target_value'
+            label='Target Value'
+            rules={[
+              {
+                required: true,
+                message: 'Please input target value!'
+              }
+            ]}
+            className='xl:min-w-[20%]'
+            // wrapperCol={{
+            //   span: 4
+            // }}
+          >
+            <InputNumber />
+          </Form.Item>
+          <Form.Item
+            wrapperCol={{
+              span: 24
+            }}
+          >
+            <Button
+              size='middle'
+              type='primary'
+              htmlType='submit'
+              className=' w-[10rem] bg-blue-800'
+            >
+              Add
+            </Button>
+          </Form.Item>
+        </Form>
+      </LoadingAnimation>
       {/* table */}
       <Form form={form} component={false} name='table-edit'>
         <Table

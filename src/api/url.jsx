@@ -24,7 +24,7 @@ const urlDoc = {
     // getUserHabitById we can use same endpoint for both
     getUserHabit: { url: '/api/habit', type: 'get' },
     editHabit: { url: '/api/habit/', type: 'patch' },
-    deleteHabit: { url: '/api/habit', type: 'delete' },
+    deleteHabit: { url: '/api/habit/', type: 'delete' },
     logHabitProgress: { url: '/api/habit/log-progress', type: 'post' },
     getHabitProgress: { url: '/api/habit/progress', type: 'get' }
   }
