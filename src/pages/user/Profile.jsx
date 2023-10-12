@@ -7,7 +7,7 @@ import {
   notification,
   InputNumber
 } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AiOutlineWarning } from 'react-icons/ai'
 import handleApiCall from '../../api/handleApiCall'
 import { FaSadCry, FaSmile } from 'react-icons/fa'
@@ -17,6 +17,7 @@ import LoadingAnimation from '../../components/LoadingAnimation'
 const Profile = () => {
   const [reason, setReason] = useState('')
   const [loading, setLoading] = useState(false)
+  const [form] = Form.useForm()
 
   const openNotification = () => {
     notification.open({
@@ -30,6 +31,30 @@ const Profile = () => {
     })
   }
 
+  // api call to get profile
+  const handleGetUser = () => {
+    handleApiCall({
+      urlType: 'getProfile',
+      variant: 'user',
+      setLoading,
+      cb: (data, status) => {
+        if (status === 200) {
+          // update table
+          form.setFieldsValue({
+            name: data.name,
+            age: data.age,
+            height: data.height,
+            weight: data.weight,
+            job_type: data.job_type
+          })
+        } else {
+          openNotification()
+        }
+      }
+    })
+  }
+
+  // api call to edit profile
   const onFinish = values => {
     const dataObj = {
       name: values.name,
@@ -51,12 +76,40 @@ const Profile = () => {
             description: 'Profile updated successfully.'
           })
           // update profile
+          handleGetUser()
         } else {
           openNotification()
         }
       }
     })
   }
+
+  // api call to delete profile
+  const handleProfileDelete = () => {
+    handleApiCall({
+      urlType: 'setAccountDelete',
+      variant: 'user',
+      setLoading,
+      data: {
+        description: reason
+      },
+      cb: (data, status) => {
+        if (status === 200) {
+          notification.open({
+            message: 'Account Deleted!',
+            icon: <MdCancel className='text-red-500' />,
+            description: 'Account deleted successfully.'
+          })
+          setReason('')
+          localStorage.removeItem('userToken')
+        } else {
+          setReason('')
+          openNotification()
+        }
+      }
+    })
+  }
+
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo)
   }
@@ -65,7 +118,10 @@ const Profile = () => {
     marginBottom: '25px'
   }
 
-  const [form] = Form.useForm()
+  useEffect(() => {
+    handleGetUser()
+  }, [])
+
   return (
     <PageWrapper header='Profile'>
       <LoadingAnimation
@@ -266,30 +322,7 @@ const Profile = () => {
                   />
                 </div>
               }
-              onConfirm={() => {
-                handleApiCall({
-                  urlType: 'setAccountDelete',
-                  variant: 'user',
-                  setLoading,
-                  data: {
-                    description: reason
-                  },
-                  cb: (data, status) => {
-                    if (status === 200) {
-                      notification.open({
-                        message: 'Account Deleted!',
-                        icon: <MdCancel className='text-red-500' />,
-                        description: 'Account deleted successfully.'
-                      })
-                      setReason('')
-                      localStorage.removeItem('userToken')
-                    } else {
-                      setReason('')
-                      openNotification()
-                    }
-                  }
-                })
-              }}
+              onConfirm={() => handleProfileDelete()}
               okButtonProps={{
                 className: 'bg-red-500 hover:!bg-red-800',
                 disabled: reason.length === 0

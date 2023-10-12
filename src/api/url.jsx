@@ -6,6 +6,8 @@ const urlDoc = {
     logHabit: { url: '/api/habit/log-habit', type: 'post' },
     // edit user
     editUser: { url: '/api/user/profile', type: 'patch' },
+    // get profile data
+    getProfile: { url: '/api/user/profile', type: 'get' },
     // delete profile
     setAccountDelete: { url: '/api/user/profile/delete-request', type: 'post' },
     // admin
