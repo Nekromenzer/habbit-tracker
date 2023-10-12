@@ -12,7 +12,9 @@ const urlDoc = {
     setAccountDelete: { url: '/api/user/profile/delete-request', type: 'post' },
     // admin
     deleteAccount: { url: '/api/user/profile', type: 'delete' },
-    getAccountDelete: { url: '/api/user/profile/delete-request', type: 'get' }
+    getAccountDelete: { url: '/api/user/profile/delete-request', type: 'get' },
+    // get help form admin
+    postHelp: { url: '/api/user/help-center', type: 'post' }
   },
   habit: {
     createPreHabits: { url: '/api/habit/predefined-habit', type: 'post' },

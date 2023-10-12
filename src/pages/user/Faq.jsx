@@ -1,8 +1,13 @@
 /* eslint-disable react/no-unescaped-entities */
-import { Button, Collapse, Form, Input } from 'antd'
+import { Button, Collapse, Form, Input, notification } from 'antd'
 import PageWrapper from '../../components/PageWrapper'
+import { useState } from 'react'
+import LoadingAnimation from '../../components/LoadingAnimation'
+import handleApiCall from '../../api/handleApiCall'
+import { FaSadCry, FaSmile } from 'react-icons/fa'
 
 const Faq = () => {
+  const [loading, setLoading] = useState(false)
   const items = [
     {
       key: '1',
@@ -152,40 +157,107 @@ const Faq = () => {
     }
   ]
   const [form] = Form.useForm()
+
+  const openNotification = () => {
+    notification.open({
+      message: 'Something went wrong!',
+      icon: <FaSadCry className='text-yellow-500' />,
+      description:
+        'Try again with valid credentials or check your internet connection.',
+      onClick: () => {
+        console.log('Notification Clicked!')
+      }
+    })
+  }
+
+  const onFinish = values => {
+    handleApiCall({
+      urlType: 'postHelp',
+      variant: 'user',
+      setLoading,
+      data: values,
+      cb: (data, status) => {
+        if (status === 200) {
+          notification.open({
+            message: 'Question sent!',
+            icon: <FaSmile className='text-green-500' />,
+            description: 'Your question has been sent successfully.'
+          })
+          form.resetFields()
+        } else {
+          openNotification()
+        }
+      }
+    })
+  }
   return (
     <PageWrapper header='Frequently asked questions'>
-      <div className='mb-6'>
-        <Form form={form} name='add-habit' layout='inline'>
-          <Form.Item
-            name='question'
-            label='Ask a question'
-            rules={[
-              {
-                required: true,
-                message: 'Please type your question!'
-              }
-            ]}
-            className='xl:min-w-[50%]'
+      <LoadingAnimation loading={loading} tip='sending.....'>
+        <div className='mb-6'>
+          <Form
+            form={form}
+            name='add-habit'
+            layout='inline'
+            onFinish={onFinish}
           >
-            <Input placeholder='ask question , reply will get to your email soon' />
-          </Form.Item>
-          <Form.Item
-            wrapperCol={{
-              span: 24
-            }}
-          >
-            <Button
-              size='middle'
-              type='primary'
-              htmlType='submit'
-              className=' w-[10rem] bg-blue-800'
+            <Form.Item
+              name='name'
+              label='Name'
+              rules={[
+                {
+                  required: true,
+                  message: 'Please type your Name!'
+                }
+              ]}
+              className='xl:min-w-[10%]'
             >
-              Send
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
-      <Collapse items={items} />
+              <Input placeholder='Jane doe' />
+            </Form.Item>
+            <Form.Item
+              label='Email'
+              name='email'
+              rules={[
+                { required: true, message: 'Please enter your email!' },
+                {
+                  type: 'email',
+                  message: 'Please enter valid E-mail!'
+                }
+              ]}
+              className='xl:min-w-[10%]'
+            >
+              <Input placeholder='sample@gmail.com' />
+            </Form.Item>
+            <Form.Item
+              name='question'
+              label='Ask a question'
+              rules={[
+                {
+                  required: true,
+                  message: 'Please type your question!'
+                }
+              ]}
+              className='xl:min-w-[50%]'
+            >
+              <Input placeholder='ask question , reply will get to your email soon' />
+            </Form.Item>
+            <Form.Item
+              wrapperCol={{
+                span: 24
+              }}
+            >
+              <Button
+                size='middle'
+                type='primary'
+                htmlType='submit'
+                className=' w-[10rem] bg-blue-800'
+              >
+                Send
+              </Button>
+            </Form.Item>
+          </Form>
+        </div>
+        <Collapse items={items} />
+      </LoadingAnimation>
     </PageWrapper>
   )
 }
