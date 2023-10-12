@@ -110,6 +110,7 @@ const Profile = () => {
     })
   }
 
+  //  form submit failed dev info
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo)
   }
@@ -120,6 +121,7 @@ const Profile = () => {
 
   useEffect(() => {
     handleGetUser()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
