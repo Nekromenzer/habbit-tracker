@@ -13,6 +13,7 @@ import AdminHabit from './pages/admin/AdminHabit'
 import NotFound from './pages/NotFound'
 import HandleNotFound from './auth/HandleNotfound'
 import AdminContact from './pages/admin/AdminContact'
+import AdminUserDelete from './pages/admin/AdminUserDelete'
 
 function App () {
   // const isAdmin = localStorage.getItem('isAdmin') || false
@@ -42,6 +43,7 @@ function App () {
           >
             <Route path='/admin' element={<AdminHabit />} />
             <Route path='/admin/contact' element={<AdminContact />} />
+            <Route path='/admin/user-delete' element={<AdminUserDelete />} />
           </Route>
         </Route>
       </Route>

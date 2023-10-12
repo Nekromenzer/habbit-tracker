@@ -1,16 +1,12 @@
 import { Col, Row, Avatar } from 'antd'
 import { Outlet } from 'react-router'
-import {
-  // BsFillClipboard2Fill,
-  // BsFillClipboard2PlusFill,
-  // BsFillClipboard2HeartFill,
-  BsFillCaretDownFill
-} from 'react-icons/bs'
+import { BsFillCaretDownFill } from 'react-icons/bs'
 import { BiSolidUser, BiSolidExit, BiSolidTimeFive } from 'react-icons/bi'
 import {
   TbLayoutSidebarLeftExpandFilled,
   TbLayoutSidebarRightExpandFilled
 } from 'react-icons/tb'
+import { AiOutlineUsergroupDelete } from 'react-icons/ai'
 import { FaQuestionCircle } from 'react-icons/fa'
 import { FaRunning } from 'react-icons/fa'
 import { useNavigate } from 'react-router'
@@ -29,11 +25,28 @@ function getItem (label, key, icon, children, type) {
 }
 
 const adminItems = [
-  getItem('Habits', 'habits', <FaRunning className='!text-[1.2rem]' />),
+  getItem('Pre Habits', 'habits', <FaRunning className='!text-[1.2rem]' />),
   {
     type: 'divider'
   },
-  getItem('User Contact', 'contact', <FaQuestionCircle className='!text-[1.2rem]' />),
+  getItem(
+    'Users',
+    'users',
+    null,
+    [
+      getItem(
+        'User Contact',
+        'contact',
+        <FaQuestionCircle className='!text-[1.2rem]' />
+      ),
+      getItem(
+        'Account Delete Req',
+        'user-delete',
+        <AiOutlineUsergroupDelete className='!text-[1.2rem]' />
+      )
+    ],
+    'group'
+  ),
   {
     type: 'divider'
   }
@@ -59,28 +72,6 @@ const items = [
   {
     type: 'divider'
   }
-  // getItem('Jobs', 'jobs', <BsFillClipboard2Fill className='!text-[1.2rem]' />, [
-  //   getItem(
-  //     'Add new',
-  //     'new-vacancy',
-  //     <BsFillClipboard2PlusFill className='!text-[1.2rem]' />
-  //   ),
-  //   getItem(
-  //     'Posted',
-  //     'posted-vacancy',
-  //     <BsFillClipboard2HeartFill className='!text-[1.2rem]' />
-  //   )
-  // ]),
-  // {
-  //   type: 'divider'
-  // }
-  // getItem(
-  //   'Analytics',
-  //   'grp',
-  //   null,
-  //   [getItem('jobs', '13'), getItem('Option 14', '14')],
-  //   'group'
-  // )
 ]
 
 // eslint-disable-next-line react/prop-types
@@ -94,6 +85,9 @@ const Layout = ({ admin }) => {
       }
       if (e.key === 'contact') {
         navigate('/admin/contact')
+      }
+      if (e.key === 'user-delete') {
+        navigate('/admin/user-delete')
       }
     } else {
       if (e.key === 'habits') {
@@ -149,7 +143,7 @@ const Layout = ({ admin }) => {
           className={`px-2 py-2 h-[2rem] mt-auto flex gap-4 items-center cursor-pointer duration-300 transition ease-in delay-150 rounded ${
             expand ? 'mx-[24px]' : 'mx-auto'
           } mb-2 hover:bg-red-500 hover:shadow group`}
-          onClick={()=>{
+          onClick={() => {
             localStorage.removeItem('userToken')
             navigate('/sign-in')
           }}

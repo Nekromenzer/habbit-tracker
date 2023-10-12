@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import PageWrapper from '../../components/PageWrapper'
 import { Table, notification } from 'antd'
 import { FaSadCry } from 'react-icons/fa'

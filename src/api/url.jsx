@@ -29,7 +29,14 @@ const urlDoc = {
     logHabitProgress: { url: '/api/habit/log-progress', type: 'post' },
     getHabitProgress: { url: '/api/habit/progress', type: 'get' },
     // admin help center
-    getUsersQuestions: { url: '/api/user/help-center', type: 'get' }
+    getUsersQuestions: { url: '/api/user/help-center', type: 'get' },
+    // get delete req
+    getUserAccountDeleteRequests: {
+      url: '/api/user/profile/delete-request',
+      type: 'get'
+    },
+    // delete account
+    deleteUserAccount: { url: '/api/user/profile', type: 'delete' }
   }
 }
 
