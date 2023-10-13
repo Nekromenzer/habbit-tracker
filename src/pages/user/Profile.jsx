@@ -41,11 +41,11 @@ const Profile = () => {
         if (status === 200) {
           // update table
           form.setFieldsValue({
-            name: data.name,
-            age: data.age,
-            height: data.height,
-            weight: data.weight,
-            job_type: data.job_type
+            name: data.data.name,
+            age: data.data.age,
+            height: data.data.height,
+            weight: data.data.weight,
+            job_type: data.data.job_type
           })
         } else {
           openNotification()
@@ -98,10 +98,13 @@ const Profile = () => {
           notification.open({
             message: 'Account Deleted!',
             icon: <MdCancel className='text-red-500' />,
-            description: 'Account deleted successfully.'
+            description: 'Account deleted request sent successfully to admin.'
           })
           setReason('')
           localStorage.removeItem('userToken')
+          setTimeout(() => {
+            window.location.reload()
+          }, 2000)
         } else {
           setReason('')
           openNotification()
@@ -121,7 +124,7 @@ const Profile = () => {
 
   useEffect(() => {
     handleGetUser()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -159,61 +162,6 @@ const Profile = () => {
             >
               <Input />
             </Form.Item>
-
-            {/* <Form.Item
-            label='Email'
-            name='email'
-            rules={[
-              //   { required: true, message: 'Please enter your email!' },
-              {
-                type: 'email',
-                message: 'Please enter valid E-mail!'
-              }
-            ]}
-            style={formItemStyles}
-          >
-            <Input disabled />
-          </Form.Item> */}
-
-            {/* <Form.Item
-            label='Password'
-            name='password'
-            rules={[
-              { required: true, message: 'Please enter your password!' },
-              { min: 6, message: 'Password must be minimum 6 characters.' },
-              { max: 20, message: 'Password must be maximum 20 characters.' }
-            ]}
-            hasFeedback
-            style={formItemStyles}
-          >
-            <Input.Password />
-          </Form.Item>
-
-          <Form.Item
-            name='confirm'
-            label='Confirm Password'
-            dependencies={['password']}
-            hasFeedback
-            rules={[
-              {
-                required: true,
-                message: 'Please confirm your password!'
-              },
-              ({ getFieldValue }) => ({
-                validator (_, value) {
-                  if (!value || getFieldValue('password') === value) {
-                    return Promise.resolve()
-                  }
-                  return Promise.reject(
-                    new Error('The new password that you entered do not match!')
-                  )
-                }
-              })
-            ]}
-            style={formItemStyles}
-          >
-            <Input.Password />
-          </Form.Item> */}
 
             <Form.Item
               label='Job type'
@@ -299,7 +247,7 @@ const Profile = () => {
                 htmlType='submit'
                 className='!mt-8 w-[20rem] bg-blue-800 !ml-auto'
               >
-                Submit
+                Update Profile
               </Button>
             </Form.Item>
           </Form>
