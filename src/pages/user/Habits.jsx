@@ -335,7 +335,7 @@ const Habits = () => {
           form={addForm}
           name='add-habit'
           layout='inline'
-          className='mb-12'
+          className='mb-16'
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
@@ -411,7 +411,7 @@ const Habits = () => {
               cell: EditableCell
             }
           }}
-          dataSource={tableData}
+          dataSource={tableData?.reverse()}
           columns={mergedColumns}
           rowClassName='editable-row'
           pagination={{
