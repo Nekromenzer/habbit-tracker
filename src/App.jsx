@@ -15,9 +15,12 @@ import HandleNotFound from './auth/HandleNotfound'
 import AdminContact from './pages/admin/AdminContact'
 import AdminUserDelete from './pages/admin/AdminUserDelete'
 
+const loggedUserEmail = localStorage.getItem('user_email')
+const adminEmail = import.meta.env.VITE_ADMIN_EMAIL
+
 function App () {
   // const isAdmin = localStorage.getItem('isAdmin') || false
-  const userType = 'admin'
+  const userType = loggedUserEmail === adminEmail ? 'admin' : 'user'
 
   return (
     <Routes>

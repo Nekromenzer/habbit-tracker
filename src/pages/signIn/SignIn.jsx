@@ -5,16 +5,25 @@ import { FaSadCry } from 'react-icons/fa'
 import { useNavigate } from 'react-router'
 import LoadingAnimation from '../../components/LoadingAnimation'
 
+const loggedUserEmail = localStorage.getItem('user_email')
+const adminEmail = import.meta.env.VITE_ADMIN_EMAIL
+
 const SignIn = () => {
   const [isSignIn, setIsSignIn] = useState(true)
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
-  const openNotification = () => {
+  const openNotification = code => {
+    console.log(code)
     notification.open({
       message: 'Something went wrong!',
       icon: <FaSadCry className='text-yellow-500' />,
       description:
-        'Try again with valid credentials or check your internet connection.',
+        code === 400
+          ? isSignIn
+            ? 'Invalid Email or password!'
+            : 'User already exists.'
+          : 'Try again with valid credentials or check your internet connection.',
       onClick: () => {
         console.log('Notification Clicked!')
       }
@@ -22,40 +31,63 @@ const SignIn = () => {
   }
 
   const handleCallBack = (data, status) => {
-    console.log(data, status)
     navigate('/admin')
     if (status === 200) {
-      localStorage.setItem('userToken', data.token)
-      // need to set whether admin or not
-      localStorage.setItem('isAdmin', data.user.isAdmin)
+      localStorage.setItem('userToken', data.data.token)
       //redirect to dashboard  page
-      if (data.user.isAdmin) {
+      if (adminEmail === loggedUserEmail) {
         return navigate('/admin')
       }
       return navigate('/')
     } else {
-      openNotification()
+      openNotification(status)
     }
   }
 
   const onFinish = values => {
+    // store email in local storage
+    localStorage.setItem('user_email', values.email)
+
+    const signUpDataObj = {
+      name: values.name,
+      email: values.email,
+      password: values.password,
+      job_type: values.job_type,
+      age: values.age,
+      height: values.height,
+      weight: values.weight
+    }
     if (isSignIn) {
       //login
       handleApiCall({
         urlType: 'login',
         variant: 'user',
+        setLoading,
         data: values,
         cb: (data, status) => {
           handleCallBack(data, status)
         }
       })
     } else {
+      // registering
       handleApiCall({
         urlType: 'register',
         variant: 'user',
-        data: values,
+        setLoading,
+        data: signUpDataObj,
         cb: (data, status) => {
-          handleCallBack(data, status)
+          if (status === 200) {
+            setIsSignIn(true)
+            notification.open({
+              message: 'Account created successfully!',
+              description: 'You can login now.',
+              onClick: () => {
+                console.log('Notification Clicked!')
+              }
+            })
+          } else {
+            openNotification(status)
+          }
         }
       })
     }
@@ -74,7 +106,7 @@ const SignIn = () => {
   return (
     <div className='h-screen flex items-center justify-center'>
       <LoadingAnimation
-        loading={false}
+        loading={loading}
         tip={isSignIn ? 'Logging....' : 'Registering...'}
       >
         <div className='w-[35rem] rounded-lg shadow-md cursor-pointer p-4 py-8'>
@@ -88,7 +120,7 @@ const SignIn = () => {
           <Form
             form={form}
             name={isSignIn ? 'SignIn' : 'SignUp'}
-            preserve={false}
+            preserve
             labelCol={{
               span: 24
             }}
@@ -103,7 +135,7 @@ const SignIn = () => {
             }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
-            autoComplete='off'
+            autoComplete='on'
           >
             {!isSignIn && (
               <Form.Item
@@ -138,7 +170,7 @@ const SignIn = () => {
               name='password'
               rules={[
                 { required: true, message: 'Please enter your password!' },
-                { min: 6, message: 'Password must be minimum 6 characters.' },
+                { min: 5, message: 'Password must be minimum 5 characters.' },
                 { max: 20, message: 'Password must be maximum 20 characters.' }
               ]}
               hasFeedback
