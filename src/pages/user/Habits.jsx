@@ -315,6 +315,23 @@ const Habits = () => {
     console.log('Failed:', errorInfo)
   }
 
+  // api call to get profile
+  const handleGetUser = () => {
+    handleApiCall({
+      urlType: 'getProfile',
+      variant: 'user',
+      setLoading,
+      cb: (data, status) => {
+        if (status === 200) {
+          // update table
+          localStorage.setItem('user_name', data.data.name)
+        } else {
+          openNotification()
+        }
+      }
+    })
+  }
+
   // useEffect(() => {
   //   const loggedUserEmail = localStorage.getItem('user_email')
   //   const adminEmail = import.meta.env.VITE_ADMIN_EMAIL
@@ -325,6 +342,9 @@ const Habits = () => {
 
   useEffect(() => {
     fetchHabit()
+    handleGetUser()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
