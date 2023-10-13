@@ -1,7 +1,8 @@
 import axios from 'axios'
 import urlDoc from './url'
+import { Navigate, useNavigate } from 'react-router'
 
-const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 
 console.log(baseUrl)
 
@@ -37,6 +38,9 @@ const handleApiCall = ({
       return cb(response.data, response.status)
     } catch (error) {
       setLoading(false)
+      if (error.response?.status === 401) {
+        localStorage.removeItem('userToken')
+      }
       cb(error, error.response?.status)
       throw error
     }
