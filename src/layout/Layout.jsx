@@ -121,8 +121,8 @@ const Layout = ({ admin }) => {
             src='https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
           />
           {expand && (
-            <span className='text-md font-semibold'>
-              {admin ? 'Welcome admin' : 'James'}
+            <span className='text-md font-semibold capitalize'>
+              {admin ? 'Welcome admin' : `Welcome ${localStorage.getItem('user_name')}`}
             </span>
           )}
         </div>
