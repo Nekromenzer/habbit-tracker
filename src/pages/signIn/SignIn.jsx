@@ -106,12 +106,12 @@ const SignIn = () => {
   const [form] = Form.useForm()
 
   return (
-    <div className='h-screen flex items-center justify-center'>
+    <div className='h-screen flex items-center justify-center scale-75 2xl:scale-100'>
       <LoadingAnimation
         loading={loading}
         tip={isSignIn ? 'Logging....' : 'Registering...'}
       >
-        <div className='w-[35rem] rounded-lg shadow-md cursor-pointer p-4 py-8'>
+        <div className='w-[35rem] rounded-xl shadow-md cursor-pointer p-4 py-8 bg-white'>
           {/* header */}
           <h4 className='text-center text-3xl font-semibold text-green-500 tracking-wider capitalize pb-4 border-b-2'>
             Habit Tracker
