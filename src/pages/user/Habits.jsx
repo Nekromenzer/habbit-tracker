@@ -39,7 +39,6 @@ const Habits = () => {
     ...restProps
   }) => {
     const inputNode = inputType === 'number' ? <InputNumber /> : <Input />
-
     return (
       <td {...restProps}>
         {editing ? (
@@ -331,15 +330,7 @@ const Habits = () => {
       }
     })
   }
-
-  // useEffect(() => {
-  //   const loggedUserEmail = localStorage.getItem('user_email')
-  //   const adminEmail = import.meta.env.VITE_ADMIN_EMAIL
-  //   if (loggedUserEmail === adminEmail) {
-  //    return navigate('/admin')
-  //   }
-  // }, [])
-
+  
   useEffect(() => {
     fetchHabit()
     handleGetUser()

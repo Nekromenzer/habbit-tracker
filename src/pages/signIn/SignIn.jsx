@@ -33,11 +33,14 @@ const SignIn = () => {
   const handleCallBack = (data, status) => {
     if (status === 200) {
       localStorage.setItem('userToken', data.data.token)
-      //redirect to dashboard  page
+      // Redirect to dashboard page
       if (adminEmail === loggedUserEmail) {
-        return navigate('/admin')
+        navigate('/admin', { replace: true })
+      } else {
+        navigate('/')
       }
-      return navigate('/')
+      // Reload the page after navigation
+      window.location.reload()
     } else {
       openNotification(status)
     }

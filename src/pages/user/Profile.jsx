@@ -23,8 +23,7 @@ const Profile = () => {
     notification.open({
       message: 'Something went wrong!',
       icon: <FaSadCry className='text-yellow-500' />,
-      description:
-        'Please try again or re-log to prevent this error',
+      description: 'Please try again or re-log to prevent this error',
       onClick: () => {
         console.log('Notification Clicked!')
       }
@@ -75,6 +74,8 @@ const Profile = () => {
             icon: <FaSmile className='text-green-500' />,
             description: 'Profile updated successfully.'
           })
+          localStorage.setItem('user_name', dataObj.name)
+          window.location.reload()
           // update profile
           handleGetUser()
         } else {

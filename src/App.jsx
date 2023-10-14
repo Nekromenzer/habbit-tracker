@@ -32,7 +32,12 @@ function App () {
           {/* user layouts */}
           <Route
             path='/'
-            element={<HandleUserLevels userType={userType === 'user'} />}
+            element={
+              <HandleUserLevels
+                userType={userType === 'user'}
+                isAdmin={userType === 'admin'}
+              />
+            }
           >
             <Route path='/' element={<Habits />} />
             <Route path='tracking' element={<Tracking />} />
@@ -41,8 +46,13 @@ function App () {
           </Route>
           {/* only admin has access for this route */}
           <Route
-            path='/'
-            element={<HandleUserLevels userType={userType === 'admin'} />}
+            path='/admin'
+            element={
+              <HandleUserLevels
+                userType={userType === 'admin'}
+                isAdmin={userType === 'admin'}
+              />
+            }
           >
             <Route path='/admin' element={<AdminHabit />} />
             <Route path='/admin/contact' element={<AdminContact />} />

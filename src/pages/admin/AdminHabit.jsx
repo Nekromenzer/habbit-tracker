@@ -332,14 +332,6 @@ const AdminHabits = () => {
     })
   }
 
-  // useEffect(() => {
-  //   const loggedUserEmail = localStorage.getItem('user_email')
-  //   const adminEmail = import.meta.env.VITE_ADMIN_EMAIL
-  //   if (loggedUserEmail === adminEmail) {
-  //    return navigate('/admin')
-  //   }
-  // }, [])
-
   useEffect(() => {
     fetchHabit()
     handleGetUser()
