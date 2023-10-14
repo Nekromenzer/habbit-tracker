@@ -101,6 +101,7 @@ const Layout = ({ admin }) => {
       }
     }
   }
+
   return (
     <Row>
       <Col
@@ -122,7 +123,9 @@ const Layout = ({ admin }) => {
           />
           {expand && (
             <span className='text-md font-semibold capitalize'>
-              {admin ? 'Welcome admin' : `Welcome ${localStorage.getItem('user_name')}`}
+              {admin
+                ? 'Welcome Admin'
+                : `Welcome ${localStorage.getItem('user_name')}`}
             </span>
           )}
         </div>
@@ -170,7 +173,11 @@ const Layout = ({ admin }) => {
           )}
         </div>
       </Col>
-      <Col flex='auto' className=''>
+      <Col
+        style={{
+          flex: 'auto'
+        }}
+      >
         <Outlet />
       </Col>
     </Row>

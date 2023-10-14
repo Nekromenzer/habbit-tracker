@@ -236,7 +236,7 @@ const Faq = () => {
                   message: 'Please type your question!'
                 }
               ]}
-              className='xl:min-w-[50%]'
+              className='2xl:min-w-[50%]'
             >
               <Input placeholder='ask question , reply will get to your email soon' />
             </Form.Item>

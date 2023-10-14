@@ -134,7 +134,7 @@ const Profile = () => {
         loading={loading}
         tip={reason.length ? 'Deleting profile' : 'Updating profile'}
       >
-        <div className='flex flex-wrap gap-[15rem]'>
+        <div className='flex flex-wrap 2xl:gap-[15rem] justify-between'>
           <Form
             form={form}
             name='profile'
