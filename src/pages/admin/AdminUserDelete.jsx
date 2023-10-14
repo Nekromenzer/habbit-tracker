@@ -6,22 +6,7 @@ import handleApiCall from '../../api/handleApiCall'
 import { AiFillDelete } from 'react-icons/ai'
 
 const AdminUserDelete = () => {
-  const dataSource = [
-    {
-      key: '1',
-      name: 'Mike',
-      age: 32,
-      address: '10 Downing Street'
-    },
-    {
-      key: '2',
-      name: 'John',
-      age: 42,
-      address: '10 Downing Street'
-    }
-  ]
-
-  const [tableData, setTableData] = useState(dataSource)
+  const [tableData, setTableData] = useState([])
   const [loading, setLoading] = useState(false)
 
   const handleDeleteUserAccount = id => {
@@ -52,8 +37,11 @@ const AdminUserDelete = () => {
       setLoading,
       cb: (data, status) => {
         if (status === 200) {
-          // update table
-          setTableData(data)
+          const modifiedData = data?.data?.map(item => ({
+            ...item,
+            key: item.user_id
+          }))
+          setTableData(modifiedData)
         } else {
           openNotification()
         }
@@ -69,12 +57,18 @@ const AdminUserDelete = () => {
       width: '15rem'
     },
     {
-      title: 'Question',
-      dataIndex: 'question',
-      key: 'question'
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
+      width: '15rem'
     },
     {
-      title: 'Delete',
+      title: 'Description',
+      dataIndex: 'description',
+      key: 'description'
+    },
+    {
+      title: 'Confirm Delete',
       dataIndex: '',
       key: 'delete',
       render: (_, record) => (
