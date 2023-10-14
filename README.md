@@ -1,4 +1,3 @@
-
 # Habit Tracker
 
 Track habits and get insights on your progress
@@ -26,7 +25,7 @@ Install dependencies
 Update ENV
 
 ```bash
-  Add backend URL and admin email 
+  Add backend URL and admin email
 ```
 
 Start the server
@@ -35,9 +34,6 @@ Start the server
   npm run dev
 ```
 
-
 ## Tech Stack
 
-**Client:** React, React router, ANTD, React icons
-
-
+**Client:** React, React router, ANTD,tailwind css, React icons
