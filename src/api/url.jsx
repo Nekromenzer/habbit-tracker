@@ -19,7 +19,7 @@ const urlDoc = {
   habit: {
     getPreHabits: { url: '/api/habit/predefined-habit', type: 'get' },
     createPreHabits: { url: '/api/habit/predefined-habit', type: 'post' },
-    deletePreHabits: { url: '/api/habit/predefined-habit', type: 'delete' },
+    deletePreHabits: { url: '/api/habit/predefined-habit/', type: 'delete' },
     editPreHabits: { url: '/api/habit/predefined-habit/', type: 'patch' },
     createHabit: { url: '/api/habit/', type: 'post' },
     // getUserHabitById we can use same endpoint for both
