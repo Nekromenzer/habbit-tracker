@@ -112,12 +112,12 @@ const Layout = ({ admin }) => {
         }}
       >
         <img
-            width='100'
-            height='100'
-            src='https://img.icons8.com/external-flaticons-lineal-color-flat-icons/100/external-habit-lifestyles-flaticons-lineal-color-flat-icons-3.png'
-            alt='external-habit-lifestyles-flaticons-lineal-color-flat-icons-3'
-            className='mx-auto my-6'
-          />
+          width='64'
+          height='64'
+          src='/public/logo.png'
+          alt='logo'
+          className='mx-auto my-6'
+        />
         <div
           className={`${
             expand ? 'px-[24px]' : 'mx-auto'
