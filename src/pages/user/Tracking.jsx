@@ -46,8 +46,7 @@ const Tracking = () => {
     notification.open({
       message: 'Something went wrong!',
       icon: <FaSadCry className='text-yellow-500' />,
-      description:
-        'Please try again or re-log to prevent this error',
+      description: 'Please try again or re-log to prevent this error',
       onClick: () => {
         console.log('Notification Clicked!')
       }
@@ -72,17 +71,12 @@ const Tracking = () => {
     dataIndex,
     title,
     inputType,
-    record,
+    // record,
     // index,
     children,
     ...restProps
   }) => {
-    const inputNode =
-      inputType === 'number' ? (
-        <InputNumber max={record?.target_value} />
-      ) : (
-        <Input />
-      )
+    const inputNode = inputType === 'number' ? <InputNumber /> : <Input />
     return (
       <td {...restProps}>
         {editing ? (
@@ -303,7 +297,7 @@ const Tracking = () => {
   useEffect(() => {
     fetchHabitProgress(todayDate)
     fetchHabit()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
