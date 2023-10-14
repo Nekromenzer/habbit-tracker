@@ -4,23 +4,9 @@ import { Table, notification } from 'antd'
 import { FaSadCry } from 'react-icons/fa'
 import handleApiCall from '../../api/handleApiCall'
 
-const dataSource = [
-  {
-    key: '1',
-    name: 'Mike',
-    age: 32,
-    address: '10 Downing Street'
-  },
-  {
-    key: '2',
-    name: 'John',
-    age: 42,
-    address: '10 Downing Street'
-  }
-]
 
 const AdminContact = () => {
-  const [tableData, setTableData] = useState(dataSource)
+  const [tableData, setTableData] = useState([])
   const [loading, setLoading] = useState(false)
 
   const openNotification = () => {
@@ -43,6 +29,12 @@ const AdminContact = () => {
       width: '15rem'
     },
     {
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
+      width: '15rem'
+    },
+    {
       title: 'Question',
       dataIndex: 'question',
       key: 'question'
@@ -56,8 +48,12 @@ const AdminContact = () => {
       setLoading,
       cb: (data, status) => {
         if (status === 200) {
+          const modifiedData = data?.data?.map(item => ({
+            ...item,
+            key: item._id
+          }))
           // update table
-          setTableData(data)
+          setTableData(modifiedData)
         } else {
           openNotification()
         }
@@ -67,6 +63,7 @@ const AdminContact = () => {
 
   useEffect(() => {
     handleFetchData()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return (
     <PageWrapper header='User Contacts'>
