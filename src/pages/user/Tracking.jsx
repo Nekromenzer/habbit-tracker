@@ -8,26 +8,14 @@ import {
   Typography,
   Progress,
   DatePicker,
-  notification
+  notification,
+  Switch
 } from 'antd'
 import PageWrapper from '../../components/PageWrapper'
 import { BiCommentAdd } from 'react-icons/bi'
 import dayjs from 'dayjs'
 import handleApiCall from '../../api/handleApiCall'
 import { FaSadCry } from 'react-icons/fa'
-import { red, green, blue, yellow } from '@ant-design/colors'
-
-// const originData = []
-// for (let i = 0; i < 11; i++) {
-//   originData.push({
-//     key: i.toString(),
-//     name: `Edward ${i}`,
-//     description:
-//       'Defining types for component props improves reusability of your components by validating received data',
-//     target_value: 20 + 1,
-//     log: 0
-//   })
-// }
 
 // date format
 const dateFormat = 'YYYY-MM-DD'
@@ -46,6 +34,8 @@ const Tracking = () => {
   const [allHabitList, setAllHabitList] = useState([])
   // logged habits
   const [loggedHabits, setLoggedHabits] = useState([])
+  // logged filter
+  const [loggedFilter, setLoggedFilter] = useState(true)
 
   const openNotification = () => {
     notification.open({
@@ -322,15 +312,24 @@ const Tracking = () => {
       name: mainItem.name,
       description: mainItem.description,
       log_date: matchingLoggedItem ? matchingLoggedItem.log_date : null,
-      log: matchingLoggedItem ? matchingLoggedItem.completed_value : 0,
+      log: matchingLoggedItem ? matchingLoggedItem.completed_value : null,
       key: mainItem._id,
       target_value: mainItem.target_value
     }
   })
 
+  // filter data based on logged value
+  const filteredArray = combinedArray.filter(item => {
+    if (loggedFilter) {
+      return true // Include all data
+    } else {
+      return item.log === null // Include data where log is null
+    }
+  })
+
   useEffect(() => {
-    setTableData(combinedArray)
-  }, [loggedHabits])
+    setTableData(filteredArray)
+  }, [loggedHabits, loggedFilter])
 
   useEffect(() => {
     fetchHabitProgress(todayDate)
@@ -338,12 +337,10 @@ const Tracking = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  console.log(tableData, 'tableData')
-
   return (
     <PageWrapper header='TRACKING'>
-      <div className='mb-4 flex gap-4'>
-        <div className='text-[1rem]'>Filter by:</div>
+      <div className='my-6 flex gap-6 justify-center items-start'>
+        <div className='text-[1rem] font-semibold'>Filter by -</div>
         <DatePicker
           defaultValue={dayjs(todayDate, dateFormat)}
           format={dateFormat}
@@ -353,6 +350,15 @@ const Tracking = () => {
           }}
           allowClear={false}
         />
+        <div className='flex'>
+          <Switch
+            className='mt-1 bg-red-400'
+            checkedChildren='All records'
+            unCheckedChildren='Not logged'
+            checked={loggedFilter}
+            onChange={() => setLoggedFilter(!loggedFilter)}
+          />
+        </div>
       </div>
       {/* table */}
       <Form form={form} component={false} name='table-edit'>
