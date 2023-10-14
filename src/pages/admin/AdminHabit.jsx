@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Form,
   Input,
@@ -15,26 +15,17 @@ import { MdDelete, MdEditDocument } from 'react-icons/md'
 import { FaSadCry, FaSmile } from 'react-icons/fa'
 import handleApiCall from '../../api/handleApiCall'
 import LoadingAnimation from '../../components/LoadingAnimation'
-
-const originData = []
-for (let i = 0; i < 11; i++) {
-  originData.push({
-    key: i.toString(),
-    name: `Edward ${i}`,
-    description:
-      'Defining types for component props improves reusability of your components by validating received data',
-    target_value: 20 + 1
-  })
-}
+// import { useNavigate } from 'react-router'
 
 const AdminHabits = () => {
   const [form] = Form.useForm()
   const [addForm] = Form.useForm()
-  const [data, setData] = useState(originData)
+  // const [data, setData] = useState(originData)
   const [editingKey, setEditingKey] = useState('')
   const [loading, setLoading] = useState(false)
   const [tableData, setTableData] = useState([])
-
+  // console.log(tableData)
+  // const navigate = useNavigate()
   const isEditing = record => record.key === editingKey
 
   const EditableCell = ({
@@ -89,8 +80,8 @@ const AdminHabits = () => {
 
   // delete habit
   const handleDelete = key => {
-    const dataSource = [...data]
-    setData(dataSource.filter(item => item.key !== key))
+    const dataSource = [...tableData]
+    setTableData(dataSource.filter(item => item.key !== key))
     handleApiCall({
       urlType: 'deletePreHabits',
       variant: 'habit',
@@ -115,26 +106,39 @@ const AdminHabits = () => {
   const save = async key => {
     try {
       const row = await form.validateFields()
-      const newData = [...data]
+      const newData = [...tableData]
       const index = newData.findIndex(item => key === item.key)
       if (index > -1) {
-        console.log(row, 'row')
         const item = newData[index]
         newData.splice(index, 1, {
           ...item,
           ...row
         })
         const data = {
-          description: row.description,
-          target_value: row.target_value,
-          name: row.name
+          description:
+            tableData[index].description === row.description
+              ? ''
+              : row.description,
+          target_value:
+            tableData[index].target_value === row.target_value
+              ? ''
+              : row.target_value,
+          name: tableData[index].name === row.name ? '' : row.name
         }
-      
+
+        // get only changed fields
+        const changedData = {}
+        for (const key in data) {
+          if (data[key] !== '') {
+            changedData[key] = data[key]
+          }
+        }
+
         handleApiCall({
           urlType: 'editPreHabits',
           variant: 'habit',
           setLoading,
-          data: data,
+          data: changedData,
           urlParams: `${key}`,
           cb: (data, status) => {
             if (status === 200) {
@@ -149,11 +153,11 @@ const AdminHabits = () => {
             }
           }
         })
-        setData(newData)
+        // setData(newData)
         setEditingKey('')
       } else {
         newData.push(row)
-        setData(newData)
+        // setData(newData)
         setEditingKey('')
       }
     } catch (errInfo) {
@@ -216,7 +220,7 @@ const AdminHabits = () => {
       title: 'Delete',
       dataIndex: 'delete',
       render: (_, record) =>
-        data.length >= 1 ? (
+        tableData.length >= 1 ? (
           <Popconfirm
             title='Sure to delete?'
             onConfirm={() => handleDelete(record.key)}
@@ -246,19 +250,23 @@ const AdminHabits = () => {
     }
   })
 
-  const openNotification = () => {
+  const openNotification = (status, type) => {
     notification.open({
       message: 'Something went wrong!',
       icon: <FaSadCry className='text-yellow-500' />,
       description:
-        'Try again with valid credentials or check your internet connection.',
+        status === 400
+          ? type === 'add'
+            ? 'Duplicate Name!'
+            : 'No records for Table'
+          : 'Try again with valid credentials or check your internet connection.',
       onClick: () => {
         console.log('Notification Clicked!')
       }
     })
   }
 
-  // fetch all AdminHabits
+  // fetch all habits
   const fetchHabit = () => {
     handleApiCall({
       urlType: 'getPreHabits',
@@ -266,10 +274,13 @@ const AdminHabits = () => {
       setLoading,
       cb: (data, status) => {
         if (status === 200) {
-          // update table
-          setTableData(data)
+          const modifiedData = data.result.map(item => ({
+            ...item,
+            key: item._id
+          }))
+          setTableData(modifiedData)
         } else {
-          openNotification()
+          openNotification(status)
         }
       }
     })
@@ -284,6 +295,7 @@ const AdminHabits = () => {
       data: values,
       cb: (data, status) => {
         if (status === 200) {
+          addForm.resetFields()
           notification.open({
             message: 'Habit Added!',
             icon: <FaSmile className='text-green-500' />,
@@ -292,7 +304,7 @@ const AdminHabits = () => {
           // update table
           fetchHabit()
         } else {
-          openNotification()
+          openNotification(status, 'add')
         }
       }
     })
@@ -303,15 +315,47 @@ const AdminHabits = () => {
     console.log('Failed:', errorInfo)
   }
 
+  // api call to get profile
+  const handleGetUser = () => {
+    handleApiCall({
+      urlType: 'getProfile',
+      variant: 'user',
+      setLoading,
+      cb: (data, status) => {
+        if (status === 200) {
+          // update table
+          localStorage.setItem('user_name', data.data.name)
+        } else {
+          openNotification()
+        }
+      }
+    })
+  }
+
+  // useEffect(() => {
+  //   const loggedUserEmail = localStorage.getItem('user_email')
+  //   const adminEmail = import.meta.env.VITE_ADMIN_EMAIL
+  //   if (loggedUserEmail === adminEmail) {
+  //    return navigate('/admin')
+  //   }
+  // }, [])
+
+  useEffect(() => {
+    fetchHabit()
+    handleGetUser()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
-    <PageWrapper header='Admin Habits'>
+    <PageWrapper header='HABITS'>
       {/* add form */}
       <LoadingAnimation loading={loading}>
         <Form
           form={addForm}
           name='add-habit'
           layout='inline'
-          className='mb-12'
+          className='mb-16'
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
@@ -387,7 +431,7 @@ const AdminHabits = () => {
               cell: EditableCell
             }
           }}
-          dataSource={data}
+          dataSource={tableData?.reverse()}
           columns={mergedColumns}
           rowClassName='editable-row'
           pagination={{
