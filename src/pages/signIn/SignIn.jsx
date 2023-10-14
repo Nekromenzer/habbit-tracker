@@ -112,8 +112,15 @@ const SignIn = () => {
         tip={isSignIn ? 'Logging....' : 'Registering...'}
       >
         <div className='w-[35rem] rounded-xl shadow-md cursor-pointer p-4 py-8 bg-white'>
+          <img
+            width='100'
+            height='100'
+            src='https://img.icons8.com/external-flaticons-lineal-color-flat-icons/100/external-habit-lifestyles-flaticons-lineal-color-flat-icons-3.png'
+            alt='external-habit-lifestyles-flaticons-lineal-color-flat-icons-3'
+            className='mx-auto'
+          />
           {/* header */}
-          <h4 className='text-center text-3xl font-semibold text-green-500 tracking-wider capitalize pb-4 border-b-2'>
+          <h4 className='text-center text-xl font-semibold text-green-500 tracking-wider capitalize pb-4 border-b-2'>
             Habit Tracker
           </h4>
           <div className='text-center text-2xl font-mono font-semibold text-slate-500 py-2'>

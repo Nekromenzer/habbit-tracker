@@ -253,7 +253,7 @@ const Profile = () => {
             </Form.Item>
           </Form>
 
-          <div className='rounded-xl p-4 py-8 bg-red-50  h-[10rem]  max-h-[20rem] w-[30rem] shadow'>
+          <div className='rounded-xl p-4 py-8 bg-red-50  h-[10rem]  max-h-[20rem] w-[20rem] shadow'>
             <div className='flex gap-5 items-center'>
               <span className='text-xl'>Delete Account</span>
               <AiOutlineWarning className='text-red-500' />
@@ -264,7 +264,7 @@ const Profile = () => {
             <Popconfirm
               title='Please note reason for account delete'
               description={
-                <div className='w-[30rem]'>
+                <div className='w-[20rem]'>
                   <Input
                     placeholder='Description'
                     size='small'

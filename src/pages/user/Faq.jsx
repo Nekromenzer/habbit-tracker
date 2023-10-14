@@ -197,7 +197,7 @@ const Faq = () => {
           <Form
             form={form}
             name='add-habit'
-            layout='inline'
+            layout='inline max-w-[100%]'
             onFinish={onFinish}
           >
             <Form.Item
@@ -209,7 +209,7 @@ const Faq = () => {
                   message: 'Please type your Name!'
                 }
               ]}
-              className='xl:min-w-[10%]'
+              className='2xl:min-w-[10%]'
             >
               <Input placeholder='Jane doe' />
             </Form.Item>
@@ -223,7 +223,7 @@ const Faq = () => {
                   message: 'Please enter valid E-mail!'
                 }
               ]}
-              className='xl:min-w-[10%]'
+              className='2xl:min-w-[10%]'
             >
               <Input placeholder='sample@gmail.com' />
             </Form.Item>
@@ -249,7 +249,7 @@ const Faq = () => {
                 size='middle'
                 type='primary'
                 htmlType='submit'
-                className=' w-[10rem] bg-blue-800'
+                className='w-[6rem] 2xl:w-[10rem] bg-blue-800'
               >
                 Send
               </Button>

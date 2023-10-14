@@ -111,6 +111,13 @@ const Layout = ({ admin }) => {
           width: expand ? 256 : 60
         }}
       >
+        <img
+            width='100'
+            height='100'
+            src='https://img.icons8.com/external-flaticons-lineal-color-flat-icons/100/external-habit-lifestyles-flaticons-lineal-color-flat-icons-3.png'
+            alt='external-habit-lifestyles-flaticons-lineal-color-flat-icons-3'
+            className='mx-auto my-6'
+          />
         <div
           className={`${
             expand ? 'px-[24px]' : 'mx-auto'
@@ -126,8 +133,9 @@ const Layout = ({ admin }) => {
               {admin
                 ? 'Welcome Admin'
                 : `Welcome ${
-                    localStorage.getItem('user_name') !== null &&
-                    localStorage.getItem('user_name')
+                    localStorage.getItem('user_name') !== null
+                      ? localStorage.getItem('user_name')
+                      : ''
                   }`}
             </span>
           )}
