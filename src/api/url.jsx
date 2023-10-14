@@ -26,7 +26,7 @@ const urlDoc = {
     getUserHabit: { url: '/api/habit', type: 'get' },
     editHabit: { url: '/api/habit/', type: 'patch' },
     deleteHabit: { url: '/api/habit/', type: 'delete' },
-    logHabitProgress: { url: '/api/habit/log-progress', type: 'post' },
+    logHabitProgress: { url: '/api/habit/progress', type: 'post' },
     getHabitProgress: { url: '/api/habit/progress', type: 'get' },
     // admin help center
     getUsersQuestions: { url: '/api/user/help-center', type: 'get' },

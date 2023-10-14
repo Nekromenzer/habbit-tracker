@@ -15,6 +15,7 @@ import { BiCommentAdd } from 'react-icons/bi'
 import dayjs from 'dayjs'
 import handleApiCall from '../../api/handleApiCall'
 import { FaSadCry } from 'react-icons/fa'
+import { red, green, blue, yellow } from '@ant-design/colors'
 
 // const originData = []
 // for (let i = 0; i < 11; i++) {
@@ -39,9 +40,13 @@ const Tracking = () => {
   const [editingKey, setEditingKey] = useState('')
   const [date, setDate] = useState(todayDate)
   const [loading, setLoading] = useState(false)
+  // table data
   const [tableData, setTableData] = useState([])
+  // all habit  list
+  const [allHabitList, setAllHabitList] = useState([])
+  // logged habits
   const [loggedHabits, setLoggedHabits] = useState([])
-  console.log(tableData)
+
   const openNotification = () => {
     notification.open({
       message: 'Something went wrong!',
@@ -57,9 +62,6 @@ const Tracking = () => {
 
   const edit = record => {
     form.setFieldsValue({
-      name: '',
-      description: '',
-      target_value: '',
       log: '',
       ...record
     })
@@ -69,7 +71,7 @@ const Tracking = () => {
   const EditableCell = ({
     editing,
     dataIndex,
-    title,
+    // title,
     inputType,
     // record,
     // index,
@@ -88,7 +90,7 @@ const Tracking = () => {
             rules={[
               {
                 required: true,
-                message: `Please Input ${title}!`
+                message: `Required!`
               }
             ]}
           >
@@ -137,36 +139,74 @@ const Tracking = () => {
     {
       title: 'Name',
       dataIndex: 'name',
-      width: '25%',
-      editable: false
+      editable: false,
+      width: '10rem'
+    },
+    {
+      title: 'Description',
+      dataIndex: 'description',
+      editable: false,
+      width: '14rem'
+    },
+    {
+      title: 'Log Date',
+      dataIndex: 'log_date',
+      editable: false,
+      width: '6rem',
+      render: (_, record) => {
+        const date = record?.log_date
+        const logged = record?.log !== null
+        return (
+          <>
+            {date && logged ? (
+              dayjs(date).format('DD MMM YYYY')
+            ) : (
+              <div className='text-yellow-700 font-mono text-sm'>
+                Not logged
+              </div>
+            )}
+          </>
+        )
+      }
     },
     {
       title: 'Progress',
       dataIndex: 'progress',
-      width: '40%',
+      width: '20%',
       editable: false,
       render: (_, record) => {
+        const twoColors = {
+          '0%': '#108ee9',
+          '100%': '#87d068'
+        }
         const log = record.log
         const target = record.target_value
-        const completed = (log / target) * 100
-        return <Progress percent={completed} steps={20} showInfo={false} />
+        const completed = log === null ? 0 : (log / target) * 100
+        return (
+          <Progress
+            percent={completed}
+            showInfo={false}
+            strokeColor={twoColors}
+          />
+        )
       }
     },
     {
       title: 'Target Value',
       dataIndex: 'target_value',
-      width: '10%',
+      width: '6rem',
       editable: false
     },
     {
       title: 'Log (hrs)',
       dataIndex: 'log',
-      width: '10%',
+      width: '8rem',
       editable: true
     },
     {
       title: 'Add log',
       dataIndex: 'add_log',
+      width: '8rem',
       render: (_, record) => {
         const editable = isEditing(record)
         return editable ? (
@@ -225,20 +265,7 @@ const Tracking = () => {
       setLoading,
       cb: (data, status) => {
         if (status === 200) {
-          const modifiedTableData = data.result.map(item => {
-            return {
-              key: item._id,
-              name: item.name,
-              // description: item.description,
-              target_value: item.target_value,
-              log: null
-            }
-          })
-          // const modifiedData = data.result.map(item => ({
-          //   ...item,
-          //   key: item._id
-          // }))
-          setTableData(modifiedTableData)
+          setAllHabitList(data.result)
         } else {
           openNotification(status)
         }
@@ -255,17 +282,7 @@ const Tracking = () => {
       urlParams: `/${date}`,
       cb: (data, status) => {
         if (status === 200) {
-          // update table
-          const modifiedTableData = data.result.map(item => {
-            return {
-              key: item._id,
-              name: item.name,
-              description: item.description,
-              target_value: item.target_value,
-              log: item.log
-            }
-          })
-          setLoggedHabits(modifiedTableData)
+          setLoggedHabits(data?.result)
         } else {
           openNotification()
         }
@@ -294,11 +311,34 @@ const Tracking = () => {
     })
   }
 
+  const combinedArray = allHabitList?.map(mainItem => {
+    // Find the matching item in loggedarray by user_habit_id
+    const matchingLoggedItem = loggedHabits.find(
+      loggedItem => loggedItem.user_habit_id === mainItem._id
+    )
+
+    // Create a new object with the desired properties
+    return {
+      name: mainItem.name,
+      description: mainItem.description,
+      log_date: matchingLoggedItem ? matchingLoggedItem.log_date : null,
+      log: matchingLoggedItem ? matchingLoggedItem.completed_value : 0,
+      key: mainItem._id,
+      target_value: mainItem.target_value
+    }
+  })
+
+  useEffect(() => {
+    setTableData(combinedArray)
+  }, [loggedHabits])
+
   useEffect(() => {
     fetchHabitProgress(todayDate)
     fetchHabit()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  console.log(tableData, 'tableData')
 
   return (
     <PageWrapper header='TRACKING'>
