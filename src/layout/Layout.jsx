@@ -118,7 +118,7 @@ const Layout = ({ admin }) => {
           <Avatar
             draggable={false}
             size='large'
-            src='https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
+            src='https://xsgames.co/randomusers/avatar.php?g=pixel&key=1'
           />
           {expand && (
             <span className='text-md font-semibold capitalize'>
