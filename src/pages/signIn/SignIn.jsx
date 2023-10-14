@@ -31,7 +31,6 @@ const SignIn = () => {
   }
 
   const handleCallBack = (data, status) => {
-    navigate('/admin')
     if (status === 200) {
       localStorage.setItem('userToken', data.data.token)
       //redirect to dashboard  page
