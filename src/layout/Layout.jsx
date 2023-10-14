@@ -125,7 +125,10 @@ const Layout = ({ admin }) => {
             <span className='text-md font-semibold capitalize'>
               {admin
                 ? 'Welcome Admin'
-                : `Welcome ${localStorage.getItem('user_name')}`}
+                : `Welcome ${
+                    localStorage.getItem('user_name') !== null &&
+                    localStorage.getItem('user_name')
+                  }`}
             </span>
           )}
         </div>
