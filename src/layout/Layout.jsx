@@ -145,6 +145,8 @@ const Layout = ({ admin }) => {
           } mb-2 hover:bg-red-500 hover:shadow group`}
           onClick={() => {
             localStorage.removeItem('userToken')
+            localStorage.removeItem('user_name')
+            localStorage.removeItem('user_email')
             navigate('/sign-in')
           }}
         >
