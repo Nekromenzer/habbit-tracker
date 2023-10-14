@@ -32,11 +32,11 @@ const urlDoc = {
     getUsersQuestions: { url: '/api/user/help-center', type: 'get' },
     // get delete req
     getUserAccountDeleteRequests: {
-      url: '/api/user/profile/delete-request',
+      url: '/api/user/profile/delete-requests',
       type: 'get'
     },
     // delete account
-    deleteUserAccount: { url: '/api/user/profile', type: 'delete' }
+    deleteUserAccount: { url: '/api/user/profile/', type: 'delete' }
   }
 }
 
