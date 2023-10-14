@@ -1,6 +1,6 @@
 import axios from 'axios'
 import urlDoc from './url'
-import { Navigate, useNavigate } from 'react-router'
+// import { Navigate, useNavigate } from 'react-router'
 
 const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 
@@ -18,7 +18,7 @@ const handleApiCall = ({
 }) => {
   const url = `${baseUrl}${urlDoc[variant][urlType]?.url}${urlParams}`
   const method = urlDoc[variant][urlType]?.type
-  console.log(url)
+  // console.log(url)
   async function handelCall () {
     setLoading(true)
     try {
