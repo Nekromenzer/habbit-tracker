@@ -23,7 +23,7 @@ const SignIn = () => {
           ? isSignIn
             ? 'Invalid Email or password!'
             : 'User already exists.'
-          : 'Try again with valid credentials or check your internet connection.',
+          : 'Please try again or re-log to prevent this error',
       onClick: () => {
         console.log('Notification Clicked!')
       }

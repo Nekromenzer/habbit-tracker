@@ -4,7 +4,6 @@ import { Table, notification } from 'antd'
 import { FaSadCry } from 'react-icons/fa'
 import handleApiCall from '../../api/handleApiCall'
 
-
 const AdminContact = () => {
   const [tableData, setTableData] = useState([])
   const [loading, setLoading] = useState(false)
@@ -14,7 +13,7 @@ const AdminContact = () => {
       message: 'Something went wrong!',
       icon: <FaSadCry className='text-yellow-500' />,
       description:
-        'Try again with valid credentials or check your internet connection.',
+        'Please try again or re-log to prevent this error',
       onClick: () => {
         console.log('Notification Clicked!')
       }
@@ -32,7 +31,15 @@ const AdminContact = () => {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
-      width: '15rem'
+      width: '15rem',
+      render: (_, record) => (
+        <a
+          href={`mailto:${record.email}`}
+          className='text-blue-500 hover:underline'
+        >
+          {record.email}
+        </a>
+      )
     },
     {
       title: 'Question',
@@ -63,7 +70,7 @@ const AdminContact = () => {
 
   useEffect(() => {
     handleFetchData()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return (
     <PageWrapper header='User Contacts'>

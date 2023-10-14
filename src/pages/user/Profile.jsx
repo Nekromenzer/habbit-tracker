@@ -24,7 +24,7 @@ const Profile = () => {
       message: 'Something went wrong!',
       icon: <FaSadCry className='text-yellow-500' />,
       description:
-        'Try again with valid credentials or check your internet connection.',
+        'Please try again or re-log to prevent this error',
       onClick: () => {
         console.log('Notification Clicked!')
       }
