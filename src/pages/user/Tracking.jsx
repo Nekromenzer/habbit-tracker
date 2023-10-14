@@ -16,17 +16,17 @@ import dayjs from 'dayjs'
 import handleApiCall from '../../api/handleApiCall'
 import { FaSadCry } from 'react-icons/fa'
 
-const originData = []
-for (let i = 0; i < 11; i++) {
-  originData.push({
-    key: i.toString(),
-    name: `Edward ${i}`,
-    description:
-      'Defining types for component props improves reusability of your components by validating received data',
-    target_value: 20 + 1,
-    log: 0
-  })
-}
+// const originData = []
+// for (let i = 0; i < 11; i++) {
+//   originData.push({
+//     key: i.toString(),
+//     name: `Edward ${i}`,
+//     description:
+//       'Defining types for component props improves reusability of your components by validating received data',
+//     target_value: 20 + 1,
+//     log: 0
+//   })
+// }
 
 // date format
 const dateFormat = 'YYYY-MM-DD'
@@ -35,12 +35,13 @@ const todayDate = dayjs().format(dateFormat)
 
 const Tracking = () => {
   const [form] = Form.useForm()
-  const [data, setData] = useState(originData)
+  // const [data, setData] = useState(originData)
   const [editingKey, setEditingKey] = useState('')
   const [date, setDate] = useState(todayDate)
   const [loading, setLoading] = useState(false)
   const [tableData, setTableData] = useState([])
-
+  const [loggedHabits, setLoggedHabits] = useState([])
+  console.log(tableData)
   const openNotification = () => {
     notification.open({
       message: 'Something went wrong!',
@@ -114,7 +115,7 @@ const Tracking = () => {
   const save = async key => {
     try {
       const row = await form.validateFields()
-      const newData = [...data]
+      const newData = [...tableData]
       const index = newData.findIndex(item => key === item.key)
       if (index > -1) {
         console.log(row, 'row')
@@ -123,14 +124,14 @@ const Tracking = () => {
           ...item,
           ...row
         })
-        setData(newData)
+        setTableData(newData)
         // call api
         handleLogHabitProgress(item.key, row.log)
         // clean table val
         setEditingKey('')
       } else {
         newData.push(row)
-        setData(newData)
+        setTableData(newData)
         setEditingKey('')
       }
     } catch (errInfo) {
@@ -222,7 +223,36 @@ const Tracking = () => {
     }
   })
 
-  // fetch data
+  // fetch all habits
+  const fetchHabit = () => {
+    handleApiCall({
+      urlType: 'getUserHabit',
+      variant: 'habit',
+      setLoading,
+      cb: (data, status) => {
+        if (status === 200) {
+          const modifiedTableData = data.result.map(item => {
+            return {
+              key: item._id,
+              name: item.name,
+              // description: item.description,
+              target_value: item.target_value,
+              log: null
+            }
+          })
+          // const modifiedData = data.result.map(item => ({
+          //   ...item,
+          //   key: item._id
+          // }))
+          setTableData(modifiedTableData)
+        } else {
+          openNotification(status)
+        }
+      }
+    })
+  }
+
+  // fetch logged habits
   const fetchHabitProgress = date => {
     handleApiCall({
       urlType: 'getHabitProgress',
@@ -232,7 +262,7 @@ const Tracking = () => {
       cb: (data, status) => {
         if (status === 200) {
           // update table
-          const tableData = data.map(item => {
+          const modifiedTableData = data.result.map(item => {
             return {
               key: item._id,
               name: item.name,
@@ -241,9 +271,7 @@ const Tracking = () => {
               log: item.log
             }
           })
-          setTableData(tableData)
-          // temp
-          setData(tableData)
+          setLoggedHabits(modifiedTableData)
         } else {
           openNotification()
         }
@@ -259,7 +287,7 @@ const Tracking = () => {
       setLoading,
       urlParams: `/${habitId}`,
       data: {
-        completed_progress: log
+        completed_value: log
       },
       cb: (data, status) => {
         if (status === 200) {
@@ -274,6 +302,8 @@ const Tracking = () => {
 
   useEffect(() => {
     fetchHabitProgress(todayDate)
+    fetchHabit()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -301,7 +331,7 @@ const Tracking = () => {
               cell: EditableCell
             }
           }}
-          dataSource={data}
+          dataSource={tableData.reverse()}
           columns={mergedColumns}
           rowClassName='editable-row'
           pagination={{
