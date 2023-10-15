@@ -8,7 +8,7 @@ const changeLanguage = lng => {
 }
 
 const LanguageChange = () => {
-  const [nativeLan, setNativeLan] = useState(false)
+  const [nativeLan, setNativeLan] = useState(true)
 
   const handleLanguageChange = () => {
     setNativeLan(!nativeLan)
