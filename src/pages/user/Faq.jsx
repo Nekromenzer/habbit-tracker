@@ -5,6 +5,7 @@ import { useState } from 'react'
 import LoadingAnimation from '../../components/LoadingAnimation'
 import handleApiCall from '../../api/handleApiCall'
 import { FaSadCry, FaSmile } from 'react-icons/fa'
+import { useTranslation } from 'react-i18next'
 
 const Faq = () => {
   const [loading, setLoading] = useState(false)
@@ -157,13 +158,12 @@ const Faq = () => {
     }
   ]
   const [form] = Form.useForm()
-
+  const { t } = useTranslation()
   const openNotification = () => {
     notification.open({
       message: 'Something went wrong!',
       icon: <FaSadCry className='text-yellow-500' />,
-      description:
-        'Please try again or re-log to prevent this error',
+      description: 'Please try again or re-log to prevent this error',
       onClick: () => {
         console.log('Notification Clicked!')
       }
@@ -191,7 +191,7 @@ const Faq = () => {
     })
   }
   return (
-    <PageWrapper header='Frequently asked questions'>
+    <PageWrapper header={t('faq')}>
       <LoadingAnimation loading={loading} tip='sending.....'>
         <div className='mb-6'>
           <Form
@@ -202,7 +202,7 @@ const Faq = () => {
           >
             <Form.Item
               name='name'
-              label='Name'
+              label={t('name')}
               rules={[
                 {
                   required: true,
@@ -214,7 +214,7 @@ const Faq = () => {
               <Input placeholder='Jane doe' />
             </Form.Item>
             <Form.Item
-              label='Email'
+              label={t('email')}
               name='email'
               rules={[
                 { required: true, message: 'Please enter your email!' },
@@ -229,7 +229,7 @@ const Faq = () => {
             </Form.Item>
             <Form.Item
               name='question'
-              label='Ask a question'
+              label={t('ask a question')}
               rules={[
                 {
                   required: true,
@@ -251,7 +251,7 @@ const Faq = () => {
                 htmlType='submit'
                 className='w-[6rem] 2xl:w-[10rem] bg-blue-800'
               >
-                Send
+                {t('send')}
               </Button>
             </Form.Item>
           </Form>

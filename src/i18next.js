@@ -37,7 +37,14 @@ const resources = {
       'delete account': 'Delete Account',
       'delete reason': 'Please note reason for account delete',
       'proceed to delete': 'Proceed to delete!',
-      'revert action': ' You cant revert this action!'
+      'revert action': ' You cant revert this action!',
+      email: 'Email',
+      'ask a question': 'Ask a question',
+      send: 'Send',
+      password: 'Password',
+      'confirm password': 'Confirm Password',
+      'dont you have account': "Don't you have account ?",
+      'already have an account': 'Already have an account'
     }
   },
   sin: {
@@ -75,14 +82,21 @@ const resources = {
       'delete account': 'ගිණුම මකන්න',
       'delete reason': 'ගිණුම මකා දැමීමට හේතුව සටහන් කරන්න',
       'proceed to delete': 'මකා දැමීමට ඉදිරියට යන්න!',
-      'revert action': 'ඔබට මෙම ක්‍රියාව ආපසු හැරවිය නොහැක!'
+      'revert action': 'ඔබට මෙම ක්‍රියාව ආපසු හැරවිය නොහැක!',
+      email: 'විද්යුත් තැපෑල',
+      'ask a question': 'ප්රශ්නයක් අහන්න',
+      send: 'යවන්න',
+      password: 'මුරපදය',
+      'confirm password': 'අනුකූල මුරපදය',
+      'dont you have account': "ඔබට ගිණුමක් නැද්ද?",
+      'already have an account': 'දැනටමත් ගිණුමක් ඇත'
     }
   }
 }
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: 'en',
+  lng: 'sin',
   interpolation: {
     escapeValue: false
   }

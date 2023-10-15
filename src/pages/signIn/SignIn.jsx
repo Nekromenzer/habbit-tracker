@@ -151,7 +151,7 @@ const SignIn = () => {
           >
             {!isSignIn && (
               <Form.Item
-                label='Name'
+                label={t('name')}
                 name='name'
                 rules={[
                   { required: !isSignIn, message: 'Please enter your name' }
@@ -163,7 +163,7 @@ const SignIn = () => {
             )}
 
             <Form.Item
-              label='Email'
+              label={t('email')}
               name='email'
               rules={[
                 { required: true, message: 'Please enter your email!' },
@@ -178,7 +178,7 @@ const SignIn = () => {
             </Form.Item>
 
             <Form.Item
-              label='Password'
+              label={t('password')}
               name='password'
               rules={[
                 { required: true, message: 'Please enter your password!' },
@@ -195,7 +195,7 @@ const SignIn = () => {
               <>
                 <Form.Item
                   name='confirm'
-                  label='Confirm Password'
+                  label={t('confirm password')}
                   dependencies={['password']}
                   hasFeedback
                   rules={[
@@ -222,7 +222,7 @@ const SignIn = () => {
                 </Form.Item>
 
                 <Form.Item
-                  label='Job type'
+                  label={t('job type')}
                   name='job_type'
                   rules={[
                     {
@@ -239,7 +239,7 @@ const SignIn = () => {
                 </Form.Item>
 
                 <Form.Item
-                  label='Age'
+                  label={t('age')}
                   name='age'
                   rules={[
                     {
@@ -262,7 +262,7 @@ const SignIn = () => {
                 </Form.Item>
 
                 <Form.Item
-                  label='Height'
+                  label={t('height')}
                   name='height'
                   rules={[
                     {
@@ -283,7 +283,7 @@ const SignIn = () => {
                 </Form.Item>
 
                 <Form.Item
-                  label='Weight'
+                  label={t('weight')}
                   name='weight'
                   rules={[
                     {
@@ -319,15 +319,15 @@ const SignIn = () => {
                 htmlType='submit'
                 className='!mt-6 w-[10rem] bg-blue-800 !ml-auto'
               >
-                {isSignIn ? 'Sign In' : 'Sign Up'}
+                {isSignIn ? t('sign in') : t('sign up')}
               </Button>
             </Form.Item>
           </Form>
           <div className='flex gap-4 mt-6 justify-center'>
             <span>
               {isSignIn
-                ? "Don't you have account ?"
-                : 'Already have an account'}
+                ? t('dont you have account')
+                : t('already have an account')}
             </span>
             <span
               onClick={() => {
@@ -336,7 +336,7 @@ const SignIn = () => {
               }}
               className='text-blue-500 underline'
             >
-              {isSignIn ? 'Register' : 'Login'}
+              {isSignIn ? t('sign up') : t('sign in')}
             </span>
           </div>
         </div>
