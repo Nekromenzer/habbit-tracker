@@ -31,7 +31,7 @@ Update ENV
 Start the server
 
 ```bash
-  npm run dev
+  npm run dev | vite
 ```
 
 ## Tech Stack
