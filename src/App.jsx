@@ -14,6 +14,7 @@ import NotFound from './pages/NotFound'
 import HandleNotFound from './auth/HandleNotfound'
 import AdminContact from './pages/admin/AdminContact'
 import AdminUserDelete from './pages/admin/AdminUserDelete'
+import './i18next'
 
 const loggedUserEmail = localStorage.getItem('user_email')
 const adminEmail = import.meta.env.VITE_ADMIN_EMAIL
