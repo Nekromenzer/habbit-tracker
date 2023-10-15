@@ -4,6 +4,8 @@ import handleApiCall from '../../api/handleApiCall'
 import { FaSadCry } from 'react-icons/fa'
 import { useNavigate } from 'react-router'
 import LoadingAnimation from '../../components/LoadingAnimation'
+import { Trans, useTranslation } from 'react-i18next'
+import LanguageChange from '../../translate/LanguageChange'
 
 const loggedUserEmail = localStorage.getItem('user_email')
 const adminEmail = import.meta.env.VITE_ADMIN_EMAIL
@@ -12,6 +14,7 @@ const SignIn = () => {
   const [isSignIn, setIsSignIn] = useState(true)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const { t, i18n } = useTranslation()
 
   const openNotification = code => {
     console.log(code)
@@ -124,7 +127,7 @@ const SignIn = () => {
             Habit Tracker
           </h4>
           <div className='text-center text-2xl font-mono font-semibold text-slate-500 py-2'>
-            {isSignIn ? 'Sign In' : 'Sign Up'}
+            <Trans>{isSignIn ? 'sign in' : 'sign up'}</Trans>
           </div>
           <Form
             form={form}

@@ -23,21 +23,13 @@ const LanguageChange = () => {
   }, [nativeLan])
 
   return (
-    <div>
-      <Switch
-        checkedChildren='English'
-        unCheckedChildren='Sinhala'
-        checked={nativeLan}
-        onChange={handleLanguageChange}
-        className='bg-green-500 hover:!bg-blue-400 active:bg-red-400'
-      />
-      <button onClick={() => changeLanguage('en')} className='bg-red-300'>
-        en
-      </button>
-      <button onClick={() => changeLanguage('fr')} className='bg-blue-300'>
-        fr
-      </button>
-    </div>
+    <Switch
+      checkedChildren='Sinhala'
+      unCheckedChildren='English'
+      checked={nativeLan}
+      onChange={handleLanguageChange}
+      className='bg-green-500 hover:!bg-blue-400 active:bg-red-400 mb-4'
+    />
   )
 }
 

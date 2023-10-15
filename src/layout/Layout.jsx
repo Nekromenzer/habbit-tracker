@@ -10,9 +10,10 @@ import { AiOutlineUsergroupDelete } from 'react-icons/ai'
 import { FaQuestionCircle } from 'react-icons/fa'
 import { FaRunning } from 'react-icons/fa'
 import { useNavigate } from 'react-router'
-
 import { Menu } from 'antd'
 import { useState } from 'react'
+import LanguageChange from '../translate/LanguageChange'
+import { useTranslation } from 'react-i18next'
 
 function getItem (label, key, icon, children, type) {
   return {
@@ -24,60 +25,11 @@ function getItem (label, key, icon, children, type) {
   }
 }
 
-const adminItems = [
-  getItem('Pre Habits', 'habits', <FaRunning className='!text-[1.2rem]' />),
-  {
-    type: 'divider'
-  },
-  getItem(
-    'Users',
-    'users',
-    null,
-    [
-      getItem(
-        'User Contact',
-        'contact',
-        <FaQuestionCircle className='!text-[1.2rem]' />
-      ),
-      getItem(
-        'Account Delete Req',
-        'user-delete',
-        <AiOutlineUsergroupDelete className='!text-[1.2rem]' />
-      )
-    ],
-    'group'
-  ),
-  {
-    type: 'divider'
-  }
-]
-const items = [
-  getItem('Habits', 'habits', <FaRunning className='!text-[1.2rem]' />),
-  {
-    type: 'divider'
-  },
-  getItem(
-    'Tracking',
-    'tracking',
-    <BiSolidTimeFive className='!text-[1.2rem]' />
-  ),
-  {
-    type: 'divider'
-  },
-  getItem('Profile', 'profile', <BiSolidUser className='!text-[1.2rem]' />),
-  {
-    type: 'divider'
-  },
-  getItem('Faq', 'faq', <FaQuestionCircle className='!text-[1.2rem]' />),
-  {
-    type: 'divider'
-  }
-]
-
 // eslint-disable-next-line react/prop-types
 const Layout = ({ admin }) => {
   const [expand, setExpand] = useState(true)
   const navigate = useNavigate()
+
   const onClick = e => {
     if (admin) {
       if (e.key === 'habits') {
@@ -101,6 +53,57 @@ const Layout = ({ admin }) => {
       }
     }
   }
+  const { t } = useTranslation()
+
+  const adminItems = [
+    getItem(t('pre habits'), 'habits', <FaRunning className='!text-[1.2rem]' />),
+    {
+      type: 'divider'
+    },
+    getItem(
+      t('users'),
+      'users',
+      null,
+      [
+        getItem(
+          t('user contacts'),
+          'contact',
+          <FaQuestionCircle className='!text-[1.2rem]' />
+        ),
+        getItem(
+          t('account delete'),
+          'user-delete',
+          <AiOutlineUsergroupDelete className='!text-[1.2rem]' />
+        )
+      ],
+      'group'
+    ),
+    {
+      type: 'divider'
+    }
+  ]
+  const items = [
+    getItem(t('habits'), 'habits', <FaRunning className='!text-[1.2rem]' />),
+    {
+      type: 'divider'
+    },
+    getItem(
+      t('tracking'),
+      'tracking',
+      <BiSolidTimeFive className='!text-[1.2rem]' />
+    ),
+    {
+      type: 'divider'
+    },
+    getItem(t('profile'), 'profile', <BiSolidUser className='!text-[1.2rem]' />),
+    {
+      type: 'divider'
+    },
+    getItem(t('faq'), 'faq', <FaQuestionCircle className='!text-[1.2rem]' />),
+    {
+      type: 'divider'
+    }
+  ]
 
   return (
     <Row>
@@ -131,8 +134,8 @@ const Layout = ({ admin }) => {
           {expand && (
             <span className='text-md font-semibold capitalize'>
               {admin
-                ? 'Welcome Admin'
-                : `Welcome ${
+                ? `${t('welcome')} Admin`
+                : `${t('welcome')} ${
                     localStorage.getItem('user_name') !== null
                       ? localStorage.getItem('user_name')
                       : ''
@@ -153,23 +156,25 @@ const Layout = ({ admin }) => {
           items={admin ? adminItems : items}
           className='bg-blue-100'
         />
-        <div
-          className={`px-2 py-2 h-[2rem] mt-auto flex gap-4 items-center cursor-pointer duration-300 transition ease-in delay-150 rounded ${
-            expand ? 'mx-[24px]' : 'mx-auto'
-          } mb-2 hover:bg-red-500 hover:shadow group`}
-          onClick={() => {
-            localStorage.removeItem('userToken')
-            localStorage.removeItem('user_name')
-            localStorage.removeItem('user_email')
-            navigate('/sign-in')
-          }}
-        >
-          <BiSolidExit className='text-2xl group-hover:text-white' />
-          {expand && (
-            <span className='text-md font-semibold group-hover:text-white'>
-              Logout
-            </span>
-          )}
+        <div className={`mt-auto px-2  ${expand ? 'mx-[24px]' : 'mx-auto'}`}>
+          <LanguageChange />
+
+          <div
+            className={`py-2 h-[2rem]  flex gap-4 items-center cursor-pointer duration-300 transition ease-in delay-150 rounded  mb-2 hover:bg-red-500 hover:shadow group`}
+            onClick={() => {
+              localStorage.removeItem('userToken')
+              localStorage.removeItem('user_name')
+              localStorage.removeItem('user_email')
+              navigate('/sign-in')
+            }}
+          >
+            <BiSolidExit className='text-2xl group-hover:text-white' />
+            {expand && (
+              <span className='text-md font-semibold group-hover:text-white'>
+                {t('logout')}
+              </span>
+            )}
+          </div>
         </div>
       </Col>
       <Col className='flex flex-col justify-center'>
