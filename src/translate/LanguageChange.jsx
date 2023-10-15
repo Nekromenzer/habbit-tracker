@@ -24,8 +24,8 @@ const LanguageChange = () => {
 
   return (
     <Switch
-      checkedChildren='Sinhala'
-      unCheckedChildren='English'
+      checkedChildren='සිං'
+      unCheckedChildren='En'
       checked={nativeLan}
       onChange={handleLanguageChange}
       className='bg-green-500 hover:!bg-blue-400 active:bg-red-400 mb-4'

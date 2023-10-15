@@ -3,6 +3,7 @@ import PageWrapper from '../../components/PageWrapper'
 import { Table, notification } from 'antd'
 import { FaSadCry } from 'react-icons/fa'
 import handleApiCall from '../../api/handleApiCall'
+import { useTranslation } from 'react-i18next'
 
 const AdminContact = () => {
   const [tableData, setTableData] = useState([])
@@ -12,23 +13,24 @@ const AdminContact = () => {
     notification.open({
       message: 'Something went wrong!',
       icon: <FaSadCry className='text-yellow-500' />,
-      description:
-        'Please try again or re-log to prevent this error',
+      description: 'Please try again or re-log to prevent this error',
       onClick: () => {
         console.log('Notification Clicked!')
       }
     })
   }
 
+  const { t } = useTranslation()
+
   const columns = [
     {
-      title: 'User Name',
+      title: t('name'),
       dataIndex: 'name',
       key: 'name',
       width: '15rem'
     },
     {
-      title: 'Email',
+      title:  t('email'),
       dataIndex: 'email',
       key: 'email',
       width: '15rem',
@@ -42,7 +44,7 @@ const AdminContact = () => {
       )
     },
     {
-      title: 'Question',
+      title:  t('question'),
       dataIndex: 'question',
       key: 'question'
     }

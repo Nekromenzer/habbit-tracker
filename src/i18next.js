@@ -88,8 +88,9 @@ const resources = {
       send: 'යවන්න',
       password: 'මුරපදය',
       'confirm password': 'අනුකූල මුරපදය',
-      'dont you have account': "ඔබට ගිණුමක් නැද්ද?",
-      'already have an account': 'දැනටමත් ගිණුමක් ඇත'
+      'dont you have account': 'ඔබට ගිණුමක් නැද්ද?',
+      'already have an account': 'දැනටමත් ගිණුමක් ඇත',
+      question: 'ප්රශ්නය'
     }
   }
 }

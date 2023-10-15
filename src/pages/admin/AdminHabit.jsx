@@ -15,18 +15,17 @@ import { MdDelete, MdEditDocument } from 'react-icons/md'
 import { FaSadCry, FaSmile } from 'react-icons/fa'
 import handleApiCall from '../../api/handleApiCall'
 import LoadingAnimation from '../../components/LoadingAnimation'
-// import { useNavigate } from 'react-router'
+import { useTranslation } from 'react-i18next'
 
 const AdminHabits = () => {
   const [form] = Form.useForm()
   const [addForm] = Form.useForm()
-  // const [data, setData] = useState(originData)
   const [editingKey, setEditingKey] = useState('')
   const [loading, setLoading] = useState(false)
   const [tableData, setTableData] = useState([])
-  // console.log(tableData)
-  // const navigate = useNavigate()
+
   const isEditing = record => record.key === editingKey
+  const { t } = useTranslation()
 
   const EditableCell = ({
     editing,
@@ -167,25 +166,25 @@ const AdminHabits = () => {
 
   const columns = [
     {
-      title: 'Name',
+      title: t('name'),
       dataIndex: 'name',
       width: '25%',
       editable: true
     },
     {
-      title: 'Description',
+      title: t('description'),
       dataIndex: 'description',
       width: '40%',
       editable: true
     },
     {
-      title: 'Target Value',
+      title: t('target value'),
       dataIndex: 'target_value',
       width: '15%',
       editable: true
     },
     {
-      title: 'Edit',
+      title: t('edit'),
       dataIndex: 'edit',
       render: (_, record) => {
         const editable = isEditing(record)
@@ -217,7 +216,7 @@ const AdminHabits = () => {
       }
     },
     {
-      title: 'Delete',
+      title: t('delete'),
       dataIndex: 'delete',
       render: (_, record) =>
         tableData.length >= 1 ? (
@@ -353,7 +352,7 @@ const AdminHabits = () => {
         >
           <Form.Item
             name='name'
-            label='Name'
+            label={t('name')}
             rules={[
               {
                 required: true,
@@ -366,7 +365,7 @@ const AdminHabits = () => {
           </Form.Item>
           <Form.Item
             name='description'
-            label='Description'
+            label={t('description')}
             rules={[
               {
                 required: true,
@@ -374,15 +373,12 @@ const AdminHabits = () => {
               }
             ]}
             className='xl:min-w-[25%]'
-            // wrapperCol={{
-            //   span: 8
-            // }}
           >
             <Input />
           </Form.Item>
           <Form.Item
             name='target_value'
-            label='Target Value'
+            label={t('target value')}
             rules={[
               {
                 required: true,
@@ -407,7 +403,7 @@ const AdminHabits = () => {
               htmlType='submit'
               className=' w-[10rem] bg-blue-800'
             >
-              Add
+              {t('add')}
             </Button>
           </Form.Item>
         </Form>

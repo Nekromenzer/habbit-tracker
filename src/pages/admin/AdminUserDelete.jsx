@@ -4,10 +4,13 @@ import { Table, notification } from 'antd'
 import { FaSadCry, FaSmile } from 'react-icons/fa'
 import handleApiCall from '../../api/handleApiCall'
 import { AiFillDelete } from 'react-icons/ai'
+import { useTranslation } from 'react-i18next'
 
 const AdminUserDelete = () => {
   const [tableData, setTableData] = useState([])
   const [loading, setLoading] = useState(false)
+
+  const { t } = useTranslation()
 
   const handleDeleteUserAccount = id => {
     handleApiCall({
@@ -51,24 +54,24 @@ const AdminUserDelete = () => {
 
   const columns = [
     {
-      title: 'User Name',
+      title: t('name'),
       dataIndex: 'name',
       key: 'name',
       width: '15rem'
     },
     {
-      title: 'Email',
+      title: t('email'),
       dataIndex: 'email',
       key: 'email',
       width: '15rem'
     },
     {
-      title: 'Description',
+      title: t('description'),
       dataIndex: 'description',
       key: 'description'
     },
     {
-      title: 'Confirm Delete',
+      title: t('delete'),
       dataIndex: '',
       key: 'delete',
       render: (_, record) => (
@@ -84,8 +87,7 @@ const AdminUserDelete = () => {
     notification.open({
       message: 'Something went wrong!',
       icon: <FaSadCry className='text-yellow-500' />,
-      description:
-        'Please try again or re-log to prevent this error',
+      description: 'Please try again or re-log to prevent this error',
       onClick: () => {
         console.log('Notification Clicked!')
       }
