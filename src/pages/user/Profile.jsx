@@ -13,11 +13,14 @@ import handleApiCall from '../../api/handleApiCall'
 import { FaSadCry, FaSmile } from 'react-icons/fa'
 import { MdCancel } from 'react-icons/md'
 import LoadingAnimation from '../../components/LoadingAnimation'
+import { useTranslation } from 'react-i18next'
 
 const Profile = () => {
   const [reason, setReason] = useState('')
   const [loading, setLoading] = useState(false)
   const [form] = Form.useForm()
+
+  const { t } = useTranslation()
 
   const openNotification = () => {
     notification.open({
@@ -129,7 +132,7 @@ const Profile = () => {
   }, [])
 
   return (
-    <PageWrapper header='Profile'>
+    <PageWrapper header={t('profile')}>
       <LoadingAnimation
         loading={loading}
         tip={reason.length ? 'Deleting profile' : 'Updating profile'}
@@ -156,7 +159,7 @@ const Profile = () => {
             autoComplete='off'
           >
             <Form.Item
-              label='Name'
+              label={t('name')}
               name='name'
               rules={[{ required: true, message: 'Please enter your name' }]}
               style={formItemStyles}
@@ -165,7 +168,7 @@ const Profile = () => {
             </Form.Item>
 
             <Form.Item
-              label='Job type'
+              label={t('job type')}
               name='job_type'
               rules={[
                 {
@@ -182,7 +185,7 @@ const Profile = () => {
             </Form.Item>
 
             <Form.Item
-              label='Age'
+              label={t('age')}
               name='age'
               rules={[
                 {
@@ -201,7 +204,7 @@ const Profile = () => {
             </Form.Item>
 
             <Form.Item
-              label='Height'
+              label={t('height')}
               name='height'
               rules={[
                 {
@@ -218,7 +221,7 @@ const Profile = () => {
             </Form.Item>
 
             <Form.Item
-              label='Weight'
+              label={t('weight')}
               name='weight'
               rules={[
                 {
@@ -248,21 +251,21 @@ const Profile = () => {
                 htmlType='submit'
                 className='!mt-8 w-[20rem] bg-blue-800 !ml-auto'
               >
-                Update Profile
+                {t('update profile')}
               </Button>
             </Form.Item>
           </Form>
 
           <div className='rounded-xl p-4 py-8 bg-red-50  h-[10rem]  max-h-[20rem] w-[20rem] shadow'>
             <div className='flex gap-5 items-center'>
-              <span className='text-xl'>Delete Account</span>
+              <span className='text-xl'>{t('delete account')}</span>
               <AiOutlineWarning className='text-red-500' />
             </div>
             <div className='tracking-wider text-sm py-2'>
-              You cant revert this action!
+            {t('revert action')}
             </div>
             <Popconfirm
-              title='Please note reason for account delete'
+              title={t('delete reason')}
               description={
                 <div className='w-[20rem]'>
                   <Input
@@ -280,7 +283,7 @@ const Profile = () => {
               }}
             >
               <Button type='primary' danger>
-                Proceed to delete!
+                {t('proceed to delete')}
               </Button>
             </Popconfirm>
           </div>

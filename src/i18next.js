@@ -28,7 +28,16 @@ const resources = {
       'add log': 'Add Log',
       'filter by': 'Filter By',
       'all records': 'All records',
-      'not logged': 'Not Logged'
+      'not logged': 'Not Logged',
+      age: 'Age',
+      height: 'Height',
+      weight: 'Weight',
+      'update profile': 'Update Profile',
+      'job type': 'Job Type',
+      'delete account': 'Delete Account',
+      'delete reason': 'Please note reason for account delete',
+      'proceed to delete': 'Proceed to delete!',
+      'revert action': ' You cant revert this action!'
     }
   },
   sin: {
@@ -57,7 +66,16 @@ const resources = {
       'add log': 'ලොග් එක් කරන්න',
       'filter by': 'පෙරහන් කරන්න',
       'all records': 'සියලුම වාර්තා',
-      'not logged': 'ලොග් වී නැති වාර්තා'
+      'not logged': 'ලොග් වී නැති වාර්තා',
+      age: 'වයස',
+      height: 'උස',
+      weight: 'බර',
+      'update profile': 'පැතිකඩ යාවත්කාලීන කරන්න',
+      'job type': 'රැකියා වර්ගය',
+      'delete account': 'ගිණුම මකන්න',
+      'delete reason': 'ගිණුම මකා දැමීමට හේතුව සටහන් කරන්න',
+      'proceed to delete': 'මකා දැමීමට ඉදිරියට යන්න!',
+      'revert action': 'ඔබට මෙම ක්‍රියාව ආපසු හැරවිය නොහැක!'
     }
   }
 }
