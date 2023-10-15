@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import {
   Form,
   Input,
@@ -16,6 +16,7 @@ import { BiCommentAdd } from 'react-icons/bi'
 import dayjs from 'dayjs'
 import handleApiCall from '../../api/handleApiCall'
 import { FaSadCry } from 'react-icons/fa'
+import { useTranslation } from 'react-i18next'
 
 // date format
 const dateFormat = 'YYYY-MM-DD'
@@ -36,6 +37,8 @@ const Tracking = () => {
   const [loggedHabits, setLoggedHabits] = useState([])
   // logged filter
   const [loggedFilter, setLoggedFilter] = useState(true)
+
+  const { t } = useTranslation()
 
   const openNotification = () => {
     notification.open({
@@ -127,19 +130,19 @@ const Tracking = () => {
 
   const columns = [
     {
-      title: 'Name',
+      title: t('name'),
       dataIndex: 'name',
       editable: false,
       width: '10rem'
     },
     {
-      title: 'Description',
+      title: t('description'),
       dataIndex: 'description',
       editable: false,
       width: '14rem'
     },
     {
-      title: 'Log Date',
+      title: t('log date'),
       dataIndex: 'log_date',
       editable: false,
       width: '6rem',
@@ -160,7 +163,7 @@ const Tracking = () => {
       }
     },
     {
-      title: 'Progress',
+      title: t('progress'),
       dataIndex: 'progress',
       width: '20%',
       editable: false,
@@ -182,19 +185,19 @@ const Tracking = () => {
       }
     },
     {
-      title: 'Target Value',
+      title: t('target value'),
       dataIndex: 'target_value',
       width: '6rem',
       editable: false
     },
     {
-      title: 'Log (hrs)',
+      title: t('log hrs'),
       dataIndex: 'log',
       width: '8rem',
       editable: true
     },
     {
-      title: 'Add log',
+      title: t('add log'),
       dataIndex: 'add_log',
       width: '8rem',
       render: (_, record) => {
@@ -340,7 +343,7 @@ const Tracking = () => {
   return (
     <PageWrapper header='TRACKING'>
       <div className='my-6 flex gap-6 justify-center items-start'>
-        <div className='text-[1rem] font-semibold'>Filter by -</div>
+        <div className='text-[1rem] font-semibold'>{t('filter by')} -</div>
         <DatePicker
           defaultValue={dayjs(todayDate, dateFormat)}
           format={dateFormat}
@@ -353,8 +356,8 @@ const Tracking = () => {
         <div className='flex'>
           <Switch
             className='mt-1 bg-red-400'
-            checkedChildren='All records'
-            unCheckedChildren='Not logged'
+            checkedChildren={t('all records')}
+            unCheckedChildren={t('not logged')}
             checked={loggedFilter}
             onChange={() => setLoggedFilter(!loggedFilter)}
           />

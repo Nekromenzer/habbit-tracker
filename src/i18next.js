@@ -21,7 +21,14 @@ const resources = {
       'target value': 'Target Value',
       edit: 'Edit',
       delete: 'Delete',
-      add: 'Add'
+      add: 'Add',
+      'log date': 'Log Date',
+      progress: 'Progress',
+      'log hrs': 'Log (hrs)',
+      'add log': 'Add Log',
+      'filter by': 'Filter By',
+      'all records': 'All records',
+      'not logged': 'Not Logged'
     }
   },
   sin: {
@@ -43,7 +50,14 @@ const resources = {
       'target value': 'ඉලක්ක අගය',
       edit: 'සංස්කරණය',
       delete: 'මකා දමන්න',
-      add: 'එකතු කරන්න'
+      add: 'එකතු කරන්න',
+      'log date': 'ලොග් දිනය',
+      progress: 'ප්රගතිය',
+      'log hrs': 'ලොග් (පැය)',
+      'add log': 'ලොග් එක් කරන්න',
+      'filter by': 'පෙරහන් කරන්න',
+      'all records': 'සියලුම වාර්තා',
+      'not logged': 'ලොග් වී නැති වාර්තා'
     }
   }
 }
