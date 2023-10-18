@@ -111,7 +111,7 @@ const Layout = ({ admin }) => {
         span='auto'
         className='bg-blue-100 h-screen flex flex-col'
         style={{
-          width: expand ? 256 : 60
+          width: expand ? 225 : 60
         }}
       >
         <img
@@ -149,7 +149,7 @@ const Layout = ({ admin }) => {
           expandIcon={<BsFillCaretDownFill />}
           onClick={onClick}
           style={{
-            width: expand ? 256 : 60
+            width: expand ? 225 : 60
           }}
           defaultSelectedKeys={['habits']}
           mode='inline'
